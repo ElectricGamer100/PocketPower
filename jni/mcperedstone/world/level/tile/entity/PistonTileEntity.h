@@ -8,25 +8,25 @@ class Entity;
 
 class PistonTileEntity : public TileEntity {
 public:
-      Tile* storedBlock;
-      int storedData;
-      int orientation;
-      bool extending;
-      bool renderHead;
-      float progress;
-      float oldProgress;
-      std::vector<Entity*> pushedMobs;
+	Tile* storedBlock;
+	int storedData;
+	int orientation;
+	bool extending;
+	bool renderHead;
+	float progress;
+	float oldProgress;
+	std::vector<Entity*> pushedMobs;
 
-      PistonTileEntity(const TilePos&, int, int, int, bool, bool);
+	PistonTileEntity(const TilePos&, int, int, int, bool, bool);
 
-      virtual void load(CompoundTag*);
-      virtual bool save(CompoundTag*);
-      virtual void tick(TileSource*);
-      virtual void onRemoved();
+	virtual void load(CompoundTag*);
+	virtual bool save(CompoundTag*);
+	virtual void tick(TileSource*);
+	virtual void onRemoved();
 
-      float getInterpolatedProgress(float);
-      float getOffsetX(float);
-      float getOffsetY(float);
-      float getOffsetZ(float);
-      void pushEntitiesInside(float, float);
+	float getInterpolatedProgress(float);
+	float getOffsetX(float);
+	float getOffsetY(float);
+	float getOffsetZ(float);
+	void pushEntitiesInside(float, float);
 };

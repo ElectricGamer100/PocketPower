@@ -10,7 +10,7 @@ class Random;
 
 class RedstoneWireTile : public Tile {
 public:
-     bool wiresProvidePower;
+	bool wiresProvidePower;
 
 	static std::array<unsigned int, 16> colors;
 	
@@ -30,7 +30,7 @@ public:
 	virtual int getDirectSignal(TileSource*, int, int, int, int);
 	virtual void addCollisionShapes(TileSource&, int, int, int, AABB const*, std::vector<AABB, std::allocator<AABB>>&);
 
-     void recalculate(TileSource*, int, int, int);
+	void recalculate(TileSource*, int, int, int);
 	void calculateChanges(TileSource*, int, int, int, int, int, int);
 	void updateWires(TileSource*, int, int, int);
 	int getStrongerSignal(TileSource*, int, int, int, int);

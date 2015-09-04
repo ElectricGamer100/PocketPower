@@ -99,10 +99,10 @@ bool RedstoneWireTile::mayPlace(TileSource* region, int x, int y, int z) {
 }
 
 void RedstoneWireTile::neighborChanged(TileSource* region, int x, int y, int z, int newX, int newY, int newZ) {
-      if(!canSurvive(region, x, y, z)) {
-            //popResource(region, x, y, z, ItemInstance(331, 1, 0));
-            //region->removeTile(x, y, z);
-      }
+	if(!canSurvive(region, x, y, z)) {
+		//popResource(region, x, y, z, ItemInstance(331, 1, 0));
+		//region->removeTile(x, y, z);
+	}
 	recalculate(region, x, y, z);
 	Tile::neighborChanged(region, x, y, z, newX, newY, newZ);
 }
@@ -145,17 +145,17 @@ int RedstoneWireTile::getDirectSignal(TileSource* region, int x, int y, int z, i
 			zp = true;
 	}
 
-    if(!zm && !xp && !xm && !zp && side >= 2 && side <= 5)
-        return data;
-    if(side == 2 && zm && !xm && !xp)
-        return data;
-    if(side == 3 && zp && !xm && !xp)
-        return data;
-    if(side == 4 && xm && !zm && !zp)
-        return data;
-    if(side == 5 && xp && !zm && !zp)
-        return data;
-    return 0;
+	if(!zm && !xp && !xm && !zp && side >= 2 && side <= 5)
+		return data;
+	if(side == 2 && zm && !xm && !xp)
+		return data;
+	if(side == 3 && zp && !xm && !xp)
+		return data;
+	if(side == 4 && xm && !zm && !zp)
+		return data;
+	if(side == 5 && xp && !zm && !zp)
+		return data;
+	return 0;
 }
 
 void RedstoneWireTile::addCollisionShapes(TileSource& region, int x, int y, int z, AABB const* aabb, std::vector<AABB, std::allocator<AABB>>& pool) {}
@@ -251,7 +251,7 @@ void RedstoneWireTile::calculateChanges(TileSource* region, int x, int y, int z,
 }
 
 void RedstoneWireTile::recalculate(TileSource* region, int x, int y, int z) {
-      calculateChanges(region, x, y, z, x, y, z);
+	calculateChanges(region, x, y, z, x, y, z);
 }
 
 int RedstoneWireTile::getStrongerSignal(TileSource* region, int x, int y, int z, int signal2) {
@@ -263,13 +263,13 @@ int RedstoneWireTile::getStrongerSignal(TileSource* region, int x, int y, int z,
 
 void RedstoneWireTile::updateWires(TileSource* region, int x, int y, int z) {
 	if(region->getTile(x, y, z).id != id) return;
-    region->updateNeighborsAt({x, y, z}, id);
-    region->updateNeighborsAt({x - 1, y, z}, id);
-    region->updateNeighborsAt({x + 1, y, z}, id);
-    region->updateNeighborsAt({x, y, z - 1}, id);
-    region->updateNeighborsAt({x, y, z + 1}, id);
-    region->updateNeighborsAt({x, y - 1, z}, id);
-    region->updateNeighborsAt({x, y + 1, z}, id);
+	region->updateNeighborsAt({x, y, z}, id);
+	region->updateNeighborsAt({x - 1, y, z}, id);
+	region->updateNeighborsAt({x + 1, y, z}, id);
+	region->updateNeighborsAt({x, y, z - 1}, id);
+	region->updateNeighborsAt({x, y, z + 1}, id);
+	region->updateNeighborsAt({x, y - 1, z}, id);
+	region->updateNeighborsAt({x, y + 1, z}, id);
 }
 
 bool RedstoneWireTile::canRedstoneConnectTo(TileSource* region, int x, int y, int z, int side) const {

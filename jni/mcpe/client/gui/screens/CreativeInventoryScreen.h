@@ -4,5 +4,5 @@ class ItemInstance;
 
 class CreativeInventoryScreen {
 public:
-      ItemInstance getItemFromType(int);
+	ItemInstance getItemFromType(int);
 };

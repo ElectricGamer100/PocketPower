@@ -11,5 +11,5 @@ public:
 	virtual void tick(TileSource*, int, int, int, Random*);
 	virtual int getResource(int, Random*);
 
-     bool isLit();
+	bool isLit();
 };

@@ -22,7 +22,7 @@ class Vec3;
 
 class Tile {
 public:
-    class SoundType {
+	class SoundType {
 	public:
 		float volume;
 		float pitch;

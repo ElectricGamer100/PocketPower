@@ -8,9 +8,9 @@ class ItemInstance {
 public:
 	short count;
 	short damage;
-     CompoundTag* userData;
+	CompoundTag* userData;
 	Item* item;
-     Tile* tile;
+	Tile* tile;
 	char filler[12];
 
 	void _setItem(int);

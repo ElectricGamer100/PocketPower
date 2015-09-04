@@ -19,7 +19,7 @@ bool TileSource::isBlockIndirectlyGettingPowered(int x, int y, int z) {
 	return getIndirectPowerLevelTo(x + 1, y, z, 5) > 0;
 }
 
-int TileSource::getIndirectPowerLevelTo(int x, int y, int z, int side) { // isBlockIndirectlyProvidingPowerTo
+int TileSource::getIndirectPowerLevelTo(int x, int y, int z, int side) {
 	int id = getTile(x, y, z).id;
 	if(Tile::solid[id]) return getBlockPowerInput(x, y, z);
 	if(id == 0) return false;
@@ -30,12 +30,12 @@ int TileSource::getStrongestIndirectPower(int x, int y, int z) {
 	int var4 = 0;
 
 	for (int var5 = 0; var5 < 6; ++var5) {
-	    int var6 = getIndirectPowerLevelTo(x + Facing::STEP_X[var5], y + Facing::STEP_Y[var5], z + Facing::STEP_Z[var5], var5);
+		int var6 = getIndirectPowerLevelTo(x + Facing::STEP_X[var5], y + Facing::STEP_Y[var5], z + Facing::STEP_Z[var5], var5);
 
-	    if(var6 >= 15)
-	        return 15;
-	    if(var6 > var4)
-	        var4 = var6;
+		if(var6 >= 15)
+			return 15;
+		if(var6 > var4)
+			var4 = var6;
 	}
 	return var4;
 }
@@ -73,25 +73,25 @@ int TileSource::getBlockPowerInput(int x, int y, int z) {
 		var5 = max(var5, isBlockProvidingPowerTo(x, y + 1, z, 1));
 
 		if(var5 >= 15)
-		    return var5;
+			return var5;
 		else {
 			var5 = max(var5, isBlockProvidingPowerTo(x, y, z - 1, 2));
 
 			if(var5 >= 15)
-			    return var5;
+				return var5;
 			else {
 				var5 = max(var5, isBlockProvidingPowerTo(x, y, z + 1, 3));
 
 				if(var5 >= 15)
-				    return var5;
+					return var5;
 				else {
 					var5 = max(var5, isBlockProvidingPowerTo(x - 1, y, z, 4));
 
 					if(var5 >= 15)
-					    return var5;
+						return var5;
 					else {
-					    var5 = max(var5, isBlockProvidingPowerTo(x + 1, y, z, 5));
-					    return var5 >= 15 ? var5 : var5;
+						var5 = max(var5, isBlockProvidingPowerTo(x + 1, y, z, 5));
+						return var5 >= 15 ? var5 : var5;
 					}
 				}
 			}

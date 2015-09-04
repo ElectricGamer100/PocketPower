@@ -9,7 +9,6 @@ class AABB;
 
 class TileSource {
 public:
-
 	void updateNeighborsAt(const TilePos&, TileID);
 	FullTile getTile(int, int, int);
 	Tile* getTilePtr(int, int, int);
@@ -29,4 +28,4 @@ public:
 	bool isBlockGettingPowered(int, int, int);
 	int getStrongestIndirectPower(int, int, int);
 	bool isRedstonePlacementException(int, int, int);
-};
+	

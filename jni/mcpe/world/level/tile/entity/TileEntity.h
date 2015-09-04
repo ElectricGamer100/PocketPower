@@ -13,7 +13,6 @@ class CompoundTag;
 
 class TileEntity {
 public:
-
 	static std::map<std::string, TileEntityType> idClassMap;
 	static std::map<TileEntityType, std::string> classIdMap;
 	static int _runningId;
@@ -31,7 +30,7 @@ public:
 	Vec3 destroyDirection; // 76
 	bool changed; // 88
 
-    TileEntity(TileEntityType, const TilePos&, const std::string&);
+	TileEntity(TileEntityType, const TilePos&, const std::string&);
 
 	virtual ~TileEntity();
 	virtual void load(CompoundTag*); // loadFromNBT
@@ -48,11 +47,11 @@ public:
 	virtual float getShadowRadius(TileSource&) const;
 
 	void setChanged();
-    const Vec3& distanceToSqr(const Vec3&); // getDistanceFrom
+	const Vec3& distanceToSqr(const Vec3&); // getDistanceFrom
 
-    static void initTileEntities(); // static {}
-    static void loadStatic(CompoundTag&); // createAndLoadEntity
-    static void setId(TileEntityType, const std::string&); // func_145826_a
+	static void initTileEntities(); // static {}
+	static void loadStatic(CompoundTag&); // createAndLoadEntity
+	static void setId(TileEntityType, const std::string&); // func_145826_a
 };
 
 class TileEntityFactory {

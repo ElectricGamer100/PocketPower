@@ -26,5 +26,5 @@ public:
     bool isWood();
     void setStateIfMobInteractsWithPlate(TileSource*, int, int, int);
     bool _listIncludesMob(EntityList&);
-	bool _isMob(const Entity*);
+    bool _isMob(const Entity*);
 };
