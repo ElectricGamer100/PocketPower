@@ -28,4 +28,4 @@ public:
 	bool isBlockGettingPowered(int, int, int);
 	int getStrongestIndirectPower(int, int, int);
 	bool isRedstonePlacementException(int, int, int);
-	
+};
