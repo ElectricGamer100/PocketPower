@@ -1,13 +1,13 @@
 #include "TextureUVCoordinateSet.h"
 
 
-TextureUVCoordinateSet::TextureUVCoordinateSet(float minU, float maxU, float minV, float maxV, int width, int height) {
-	setUV(minU, maxU, minV, maxV);
+TextureUVCoordinateSet::TextureUVCoordinateSet(float minU, float minV, float maxU, float maxV, int width, int height) {
+	setUV(minU, minV, maxU, maxV);
 	this->width = width;
 	this->height = height;
 }
 
-void TextureUVCoordinateSet::setUV(float minU, float maxU, float minV, float maxV) {
+void TextureUVCoordinateSet::setUV(float minU, float minV, float maxU, float maxV) {
 	this->minU = minU;
 	this->maxU = maxU;
 	this->minV = minV;

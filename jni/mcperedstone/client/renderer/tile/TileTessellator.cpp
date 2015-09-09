@@ -15,7 +15,7 @@ bool TileTessellator::tessellateRedstoneWireInWorld(RedstoneWireTile* tile, cons
 	int x = pos.x, y = pos.y, z = pos.z;
 	int data = (int) region->getData(x, y, z);
 	
-	TextureUVCoordinateSet cross(0.6875F, 0.7187F, 0.4375F, 0.5F, 16, 16);
+	TextureUVCoordinateSet cross(0.125F, 0.5F, 0.1562F, 0.5625F, 16, 16);
 	TextureUVCoordinateSet line = tile->getTextureUVCoordinateSet("redstone_dust_line", 0);
 
 	tex1(getLightColor(pos));
@@ -128,7 +128,7 @@ bool TileTessellator::tessellateLitNotGateInWorld(NotGateTile* tile, const TileP
 }
 
 void TileTessellator::tessellateAngledNotGate(Tile* tile, double x, double y, double z, double xRot, double zRot) {
-	TextureUVCoordinateSet torch = TextureUVCoordinateSet(0.1563F, 0.1875F, 0.3125F, 0.375F, 16, 16);
+	TextureUVCoordinateSet torch = TextureUVCoordinateSet(0.5938F, 0.3125F, 0.625F, 0.375F, 16, 16);
 
 	float var15 = torch.minU;
 	float var17 = torch.minV;
@@ -188,7 +188,7 @@ bool TileTessellator::tessellateLeverInWorld(LeverTile* tile, const TilePos& pos
 
 	tessellator->color(1.0F, 1.0F, 1.0F, 1.0F);
 
-	TextureUVCoordinateSet lever(0.8125F, 0.8437F, 0.3125F, 0.375F, 16, 16);
+	TextureUVCoordinateSet lever(0.25F, 0.375F, 0.2812F, 0.4375F, 16, 16);
 
 	float f4 = lever.minU;
 	float f5 = lever.minV;
