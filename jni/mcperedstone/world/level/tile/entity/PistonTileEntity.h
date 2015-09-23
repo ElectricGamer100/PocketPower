@@ -16,6 +16,7 @@ public:
 	float progress;
 	float oldProgress;
 	std::vector<Entity*> pushedMobs;
+	bool finished;
 
 	PistonTileEntity(const TilePos&, int, int, int, bool, bool);
 
@@ -23,10 +24,12 @@ public:
 	virtual bool save(CompoundTag*);
 	virtual void tick(TileSource*);
 	virtual void onRemoved();
+	virtual bool isFinished();
 
 	float getInterpolatedProgress(float);
 	float getOffsetX(float);
 	float getOffsetY(float);
 	float getOffsetZ(float);
 	void pushEntitiesInside(float, float);
+	void finish();
 };

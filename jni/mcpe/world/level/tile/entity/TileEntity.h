@@ -10,7 +10,8 @@
 #include "TileEntityType.h"
 class TileSource;
 class Tile;
-class CompoundTag;
+class CompoundTag; 
+class Entity;
 
 class TileEntity {
 public:

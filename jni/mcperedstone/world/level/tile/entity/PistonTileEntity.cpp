@@ -48,24 +48,36 @@ void PistonTileEntity::onRemoved() {
 }
 
 void PistonTileEntity::tick(TileSource* region) {
-	/*oldProgress = progress;
+	if(isFinished()) return;
+
+	TileEntity::tick(region);
+	oldProgress = progress;
 	
 	if(oldProgress >= 1.0F) { // if it's completely pushed into the next block
-	      pushEntitiesInside(1.0F, 0.25F);
-	      removed = true;
-	      if(region->getTile(pos.x, pos.y, pos.z).id == 34) {
-	            region->setTileAndData(pos.x, pos.y, pos.z, {storedBlock->id, storedData}, 3);
-	            region->updateNeighborsAt(pos, storedBlock->id);
-	      }
+		pushEntitiesInside(1.0F, 0.25F);
+		
+		if(region->getTile(pos.x, pos.y, pos.z).id == 34) {
+			region->setTileAndData(pos.x, pos.y, pos.z, {storedBlock->id, storedData}, 3);
+			region->updateNeighborsAt(pos, storedBlock->id);
+			finish();
+		}
 	} else {
-	      progress += 0.5F;
+		progress += 0.5F;
 
-	      if(progress > 1.0F) progress = 1.0F;
+		if(progress > 1.0F) progress = 1.0F;
 
-	      if(extending) {
-	            pushEntitiesInside(progress, progress - oldProgress + 0.0625F);
-	      }
-	}*/
+		if(extending) {
+			pushEntitiesInside(progress, progress - oldProgress + 0.0625F);
+		}
+	}
+}
+
+bool PistonTileEntity::isFinished() {
+	return finished;
+}
+
+void PistonTileEntity::finish() {
+	finished = true;
 }
 
 void PistonTileEntity::load(CompoundTag* nbt) {
