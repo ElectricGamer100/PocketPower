@@ -45,6 +45,7 @@ public:
 	virtual void clearCache(); // updateContainingBlockInfo
 	virtual void onNeighborChanged(TileSource&, int, int, int);
 	virtual float getShadowRadius(TileSource&) const;
+	virtual Entity* getCrackEntity(TileSource&, TilePos const&);
 
 	void setChanged();
 	const Vec3& distanceToSqr(const Vec3&); // getDistanceFrom
