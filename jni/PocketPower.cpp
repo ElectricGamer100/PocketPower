@@ -34,8 +34,8 @@
 extern void (*_TileEntity$initTileEntities)();
 void TileEntity$initTileEntities();
 
-extern TileEntity* (*_TileEntityFactory$createTileEntity)(TileEntityFactory*, TileEntityType, const TilePos&);
-TileEntity* TileEntityFactory$createTileEntity(TileEntityFactory*, TileEntityType, const TilePos&);
+extern std::unique_ptr<TileEntity> (*_TileEntityFactory$createTileEntity)(TileEntityType, const TilePos&);
+std::unique_ptr<TileEntity> TileEntityFactory$createTileEntity(TileEntityType, const TilePos&);
 
 
 bool (*_TileTessellator$tessellateInWorld)(TileTessellator*, Tile*, const TilePos&, unsigned char, bool);

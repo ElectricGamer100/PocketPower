@@ -2,6 +2,7 @@
 
 #include <string>
 #include <map>
+#include <memory>
 
 #include "../../TilePos.h"
 #include "../../../phys/AABB.h"
@@ -57,5 +58,5 @@ public:
 
 class TileEntityFactory {
 public:
-	TileEntity* createTileEntity(TileEntityType, const TilePos&);
+	std::unique_ptr<TileEntity> createTileEntity(TileEntityType, const TilePos&);
 };
