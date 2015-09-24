@@ -11,7 +11,7 @@ PressurePlateTile::PressurePlateTile(int id, const std::string& texture, Materia
 	destroyTime = 1.0;
 	creativeTab = CreativeTab::ITEMS;
 	setTicking(true);
-	
+
 	if(isWood()) setNameId("pressurePlateWood");
 	else setNameId("pressurePlateStone");
 }
@@ -38,7 +38,7 @@ void PressurePlateTile::tick(TileSource* region, int x, int y, int z, Random* ra
 }
 
 int PressurePlateTile::getSignal(TileSource* region, int x, int y, int z, int side) {
-	if(region->getData(x, y, z) == 0) return 0; 
+	if(region->getData(x, y, z) == 0) return 0;
 	if(side == 1) return 15;
 	return 0;
 }

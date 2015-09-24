@@ -4,10 +4,10 @@
 #include "mcpe/world/Facing.h"
 
 
-std::array<unsigned int, 16> RedstoneWireTile::colors = 
+std::array<unsigned int, 16> RedstoneWireTile::colors =
 #include "RedstoneColors.h"
 
-RedstoneWireTile::RedstoneWireTile(int blockId, const std::string& texture, const Material* material) : Tile(blockId, texture, material) {
+    RedstoneWireTile::RedstoneWireTile(int blockId, const std::string& texture, const Material* material) : Tile(blockId, texture, material) {
 	init();
 	renderType = 5;
 	renderPass = 3;
@@ -204,30 +204,29 @@ void RedstoneWireTile::calculateChanges(TileSource* region, int x, int y, int z,
 			int j3 = z;
 			int k3 = y - 1;
 			if(j2 == 0)
-			    l2--;
+				l2--;
 			if(j2 == 1)
-			    l2++;
+				l2++;
 			if(j2 == 2)
-			    j3--;
+				j3--;
 			if(j2 == 3)
-			    j3++;
+				j3++;
 			if(Tile::solid[region->getTile(l2, y, j3).id])
-			    k3 += 2;
+				k3 += 2;
 			int l3 = 0;
 			l3 = getStrongerSignal(region, l2, y, j3, -1);
 			newPower = region->getData(x, y, z);
 			if(newPower > 0)
-			    newPower--;
+				newPower--;
 			if(l3 >= 0 && l3 != newPower) {
-			    calculateChanges(region, l2, y, j3, x, y, z);
+				calculateChanges(region, l2, y, j3, x, y, z);
 			}
 			l3 = getStrongerSignal(region, l2, k3, j3, -1);
 			newPower = region->getData(x, y, z);
 			if(newPower > 0)
-			    newPower--;
-			if(l3 >= 0 && l3 != newPower)
-			{
-			    calculateChanges(region, l2, k3, j3, x, y, z);
+				newPower--;
+			if(l3 >= 0 && l3 != newPower) {
+				calculateChanges(region, l2, k3, j3, x, y, z);
 			}
 		}
 

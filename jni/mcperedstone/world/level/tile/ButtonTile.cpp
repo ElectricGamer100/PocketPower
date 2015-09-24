@@ -25,13 +25,20 @@ void ButtonTile::onPlace(TileSource* region, int x, int y, int z) {
 
 int ButtonTile::getPlacementDataValue(Mob* placer, int x, int y, int z, signed char side, float xx, float yy, float zz, int ii) {
 	switch(side) {
-		case 0: return 6;
-		case 1: return 5;
-		case 2: return 4;
-		case 3: return 3;
-		case 4: return 2;
-		case 5: return 1;
-		default: return 4;
+	case 0:
+		return 6;
+	case 1:
+		return 5;
+	case 2:
+		return 4;
+	case 3:
+		return 3;
+	case 4:
+		return 2;
+	case 5:
+		return 1;
+	default:
+		return 4;
 	}
 }
 
@@ -59,7 +66,7 @@ void ButtonTile::toggleIfArrowInside(TileSource* ts, int x, int y, int z) {
 	    ts->setTileAndData(x, y + 1, z, 3, 1, 3);
 	    ts->getLevel()->playSound(x + 0.5F, y + 0.5F, z + 0.5F, "random.click", 0.3F, 0.6F);
 	}
-*/
+	*/
 }
 
 const AABB& ButtonTile::getVisualShape(unsigned char data, AABB& aabb, bool b) {
@@ -165,20 +172,20 @@ int ButtonTile::getSignal(TileSource* region, int x, int y, int z, int side) {
 	if((data & 8) == 0) return 0;
 	int rot = data & 7;
 	if(rot == 6 && side == 0)
-	    return 15;
+		return 15;
 	if(rot == 5 && side == 1)
-	    return 15;
+		return 15;
 	if(rot == 4 && side == 2)
-	    return 15;
+		return 15;
 	if(rot == 3 && side == 3)
-	    return 15;
+		return 15;
 	if(rot == 2 && side == 4)
-	    return 15;
+		return 15;
 	if(rot == 1 && side == 5)
-	    return 15;
+		return 15;
 	return 0;
 }
-    
+
 bool ButtonTile::isSignalSource() {
 	return true;
 }
@@ -221,7 +228,7 @@ bool ButtonTile::canSurvive(TileSource* region, int x, int y, int z) {
 
 void ButtonTile::tick(TileSource* region, int x, int y, int z, Random* random) {
 	int data = region->getData(x, y, z);
-	
+
 	if((data & 8) == 0) {
 		if(isWood()) toggleIfArrowInside(region, x, y, z);
 		return;

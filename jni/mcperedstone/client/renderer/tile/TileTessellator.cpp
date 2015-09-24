@@ -14,7 +14,7 @@
 bool TileTessellator::tessellateRedstoneWireInWorld(RedstoneWireTile* tile, const TilePos& pos) {
 	int x = pos.x, y = pos.y, z = pos.z;
 	int data = (int) region->getData(x, y, z);
-	
+
 	TextureUVCoordinateSet cross(0.125F, 0.5F, 0.1562F, 0.5625F, 16, 16);
 	TextureUVCoordinateSet line = tile->getTextureUVCoordinateSet("redstone_dust_line", 0);
 

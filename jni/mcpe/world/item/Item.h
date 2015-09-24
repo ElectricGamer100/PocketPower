@@ -11,7 +11,9 @@ class Mob;
 class Level;
 class Tile;
 #include "mcperedstone/utils/CreativeTab.h"
-namespace RakNet { class BitStream; };
+namespace RakNet {
+class BitStream;
+};
 
 class Item {
 public:

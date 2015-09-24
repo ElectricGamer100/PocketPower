@@ -9,7 +9,7 @@ public:
 		DECORATION,
 		PORTAL
 	};
-	
+
 	static Material water;
 	static Material air;
 	static Material leaves;

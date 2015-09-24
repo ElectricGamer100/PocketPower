@@ -96,17 +96,16 @@ void SubstrateMemoryRelease(SubstrateMemoryRef memory);
 
 #ifdef SubstrateInternal
 struct SubstrateHookMemory {
-    SubstrateMemoryRef handle_;
+	SubstrateMemoryRef handle_;
 
-    SubstrateHookMemory(SubstrateProcessRef process, void *data, size_t size) :
-        handle_(SubstrateMemoryCreate(NULL, NULL, data, size))
-    {
-    }
+	SubstrateHookMemory(SubstrateProcessRef process, void *data, size_t size) :
+		handle_(SubstrateMemoryCreate(NULL, NULL, data, size)) {
+	}
 
-    ~SubstrateHookMemory() {
-        if (handle_ != NULL)
-            SubstrateMemoryRelease(handle_);
-    }
+	~SubstrateHookMemory() {
+		if (handle_ != NULL)
+			SubstrateMemoryRelease(handle_);
+	}
 };
 #endif
 
@@ -116,25 +115,25 @@ namespace etl {
 
 template <unsigned Case_>
 struct Case {
-    static char value[Case_ + 1];
+	static char value[Case_ + 1];
 };
 
 typedef Case<true> Yes;
 typedef Case<false> No;
 
 namespace be {
-    template <typename Checked_>
-    static Yes CheckClass_(void (Checked_::*)());
+template <typename Checked_>
+static Yes CheckClass_(void (Checked_::*)());
 
-    template <typename Checked_>
-    static No CheckClass_(...);
+template <typename Checked_>
+static No CheckClass_(...);
 }
 
 template <typename Type_>
 struct IsClass {
-    void gcc32();
+	void gcc32();
 
-    static const bool value = (sizeof(be::CheckClass_<Type_>(0).value) == sizeof(Yes::value));
+	static const bool value = (sizeof(be::CheckClass_<Type_>(0).value) == sizeof(Yes::value));
 };
 
 }
@@ -143,20 +142,20 @@ struct IsClass {
 template <typename Type_>
 __attribute__((__deprecated__))
 static inline Type_ *MSHookMessage(Class _class, SEL sel, Type_ *imp, const char *prefix = NULL) {
-    return reinterpret_cast<Type_ *>(MSHookMessage(_class, sel, reinterpret_cast<IMP>(imp), prefix));
+	return reinterpret_cast<Type_ *>(MSHookMessage(_class, sel, reinterpret_cast<IMP>(imp), prefix));
 }
 #endif
 
 template <typename Type_>
 static inline void MSHookMessage(Class _class, SEL sel, Type_ *imp, Type_ **result) {
-    return MSHookMessageEx(_class, sel, reinterpret_cast<IMP>(imp), reinterpret_cast<IMP *>(result));
+	return MSHookMessageEx(_class, sel, reinterpret_cast<IMP>(imp), reinterpret_cast<IMP *>(result));
 }
 
 template <typename Type_>
 static inline Type_ &MSHookIvar(id self, const char *name) {
-    Ivar ivar(class_getInstanceVariable(object_getClass(self), name));
-    void *pointer(ivar == NULL ? NULL : reinterpret_cast<char *>(self) + ivar_getOffset(ivar));
-    return *reinterpret_cast<Type_ *>(pointer);
+	Ivar ivar(class_getInstanceVariable(object_getClass(self), name));
+	void *pointer(ivar == NULL ? NULL : reinterpret_cast<char *>(self) + ivar_getOffset(ivar));
+	return *reinterpret_cast<Type_ *>(pointer);
 }
 
 #define MSAddMessage0(_class, type, arg0) \
@@ -276,28 +275,28 @@ static inline Type_ &MSHookIvar(id self, const char *name) {
 
 template <typename Type_>
 static inline void MSHookFunction(Type_ *symbol, Type_ *replace, Type_ **result) {
-    return MSHookFunction(
-        reinterpret_cast<void *>(symbol),
-        reinterpret_cast<void *>(replace),
-        reinterpret_cast<void **>(result)
-    );
+	return MSHookFunction(
+	           reinterpret_cast<void *>(symbol),
+	           reinterpret_cast<void *>(replace),
+	           reinterpret_cast<void **>(result)
+	       );
 }
 
 template <typename Type_>
 static inline void MSHookFunction(Type_ *symbol, Type_ *replace) {
-    return MSHookFunction(symbol, replace, reinterpret_cast<Type_ **>(NULL));
+	return MSHookFunction(symbol, replace, reinterpret_cast<Type_ **>(NULL));
 }
 
 template <typename Type_>
 static inline void MSHookSymbol(Type_ *&value, const char *name, MSImageRef image = NULL) {
-    value = reinterpret_cast<Type_ *>(MSFindSymbol(image, name));
+	value = reinterpret_cast<Type_ *>(MSFindSymbol(image, name));
 }
 
 template <typename Type_>
 static inline void MSHookFunction(const char *name, Type_ *replace, Type_ **result = NULL) {
-    Type_ *symbol;
-    MSHookSymbol(symbol, name);
-    return MSHookFunction(symbol, replace, result);
+	Type_ *symbol;
+	MSHookSymbol(symbol, name);
+	return MSHookFunction(symbol, replace, result);
 }
 
 #endif

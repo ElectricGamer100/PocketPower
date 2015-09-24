@@ -62,24 +62,24 @@ const AABB& LeverTile::getVisualShape(TileSource* region, int x, int y, int z, A
 	float f1 = 0.1875F;
 	float f2 = 0.1875F;
 	switch(region->getData(x, y, z) & 7) {
-		case 1:
-			aabb.set(0.0F, 0.5F - f, 0.5F - f1, f2, 0.5F + f, 0.5F + f1);
-			break;
-		case 2:
-			aabb.set(1.0F - f2, 0.5F - f, 0.5F - f1, 1.0F, 0.5F + f, 0.5F + f1);
-			break;
-		case 3:
-			aabb.set(0.5F - f1, 0.5F - f, 0.0F, 0.5F + f1, 0.5F + f, f2);
-			break;
-		case 4:
-			aabb.set(0.5F - f1, 0.5F - f, 1.0F - f2, 0.5F + f1, 0.5F + f, 1.0F);
-			break;
-		case 5:
-			aabb.set(0.5F - f1, 0.0F, 0.5F - f, 0.5F + f1, f2, 0.5F + f);
-			break;
-		case 7:
-			aabb.set(0.5F - f1, 1.0F - f2, 0.5F - f, 0.5F + f1, 1.0F, 0.5F + f);
-			break;
+	case 1:
+		aabb.set(0.0F, 0.5F - f, 0.5F - f1, f2, 0.5F + f, 0.5F + f1);
+		break;
+	case 2:
+		aabb.set(1.0F - f2, 0.5F - f, 0.5F - f1, 1.0F, 0.5F + f, 0.5F + f1);
+		break;
+	case 3:
+		aabb.set(0.5F - f1, 0.5F - f, 0.0F, 0.5F + f1, 0.5F + f, f2);
+		break;
+	case 4:
+		aabb.set(0.5F - f1, 0.5F - f, 1.0F - f2, 0.5F + f1, 0.5F + f, 1.0F);
+		break;
+	case 5:
+		aabb.set(0.5F - f1, 0.0F, 0.5F - f, 0.5F + f1, f2, 0.5F + f);
+		break;
+	case 7:
+		aabb.set(0.5F - f1, 1.0F - f2, 0.5F - f, 0.5F + f1, 1.0F, 0.5F + f);
+		break;
 	}
 	return aabb;
 }

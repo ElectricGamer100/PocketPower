@@ -88,7 +88,7 @@ void Tile$initTiles() {
 	Tile::button = new ButtonTile(77, "stone", &Material::circuits);
 	Tile::buttonWood = new ButtonTile(143, "planks", &Material::circuits);
 	Tile::pistonExtension = new PistonExtensionTile(34, "stone", &Material::stone);
-	
+
 	initTileItems();
 }
 
@@ -136,7 +136,7 @@ JNIEXPORT jint JNI_OnLoad(JavaVM* vm, void* reserved) {
 	MSHookFunction((void*) &CreativeInventoryScreen::getItemFromType, (void*) &CreativeInventoryScreen$getItemFromType, (void**) &_CreativeInventoryScreen$getItemFromType);
 	MSHookFunction((void*) &TileEntity::initTileEntities, (void*) &TileEntity$initTileEntities, (void**) &_TileEntity$initTileEntities);
 	MSHookFunction((void*) &TileEntityFactory::createTileEntity, (void*) &TileEntityFactory$createTileEntity, (void**) &_TileEntityFactory$createTileEntity);
-	
+
 	VirtualHook("_ZTV7TntTile", "_ZN7TntTile15neighborChangedEP10TileSourceiiiiii", (void*) &TntTile::_neighborChanged);
 	VirtualHook("_ZTV7TntTile", "_ZN4Tile7onPlaceEP10TileSourceiii", (void*) &TntTile::onPlace);
 

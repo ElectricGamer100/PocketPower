@@ -39,7 +39,7 @@ void PistonTileEntity::pushEntitiesInside(float _progress, float diff) {
 	//AABB storedTileBB = Tile::pistonExtension->getStoredTileBoundingBox(region, pos, this, progress);
 
 	//if(!storedTileBB.isEmpty()) {
-	      
+
 	//}
 }
 
@@ -52,10 +52,10 @@ void PistonTileEntity::tick(TileSource* region) {
 
 	TileEntity::tick(region);
 	oldProgress = progress;
-	
+
 	if(oldProgress >= 1.0F) { // if it's completely pushed into the next block
 		pushEntitiesInside(1.0F, 0.25F);
-		
+
 		if(region->getTile(pos.x, pos.y, pos.z).id == 34) {
 			region->setTileAndData(pos.x, pos.y, pos.z, {storedBlock->id, storedData}, 3);
 			region->updateNeighborsAt(pos, storedBlock->id);

@@ -13,7 +13,7 @@ public:
 	bool wiresProvidePower;
 
 	static std::array<unsigned int, 16> colors;
-	
+
 	RedstoneWireTile(int, const std::string&, const Material*);
 
 	virtual int getColor(TileSource*, int, int, int);

@@ -29,7 +29,7 @@ public:
 		std::string breakSound;
 		std::string stepSound;
 
-	
+
 		SoundType() {};
 		SoundType(std::string const&, float, float);
 	};
