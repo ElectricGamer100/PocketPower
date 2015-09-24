@@ -1,0 +1,11 @@
+# Ignore binaries/compiled files
+
+bin/
+obj/
+libs/
+
+# Local files
+local.properties
+
+# Vim files
+*.swp
