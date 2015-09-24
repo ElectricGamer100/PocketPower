@@ -7,7 +7,7 @@
 std::array<unsigned int, 16> RedstoneWireTile::colors =
 #include "RedstoneColors.h"
 
-    RedstoneWireTile::RedstoneWireTile(int blockId, const std::string& texture, const Material* material) : Tile(blockId, texture, material) {
+RedstoneWireTile::RedstoneWireTile(int blockId, const std::string& texture, const Material* material) : Tile(blockId, texture, material) {
 	init();
 	renderType = 5;
 	renderPass = 3;

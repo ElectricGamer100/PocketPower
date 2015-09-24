@@ -1,5 +1,6 @@
 # Ignore binaries/compiled files
 
+gen/
 bin/
 obj/
 libs/
