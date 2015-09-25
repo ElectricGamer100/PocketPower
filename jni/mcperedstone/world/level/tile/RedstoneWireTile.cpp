@@ -278,7 +278,7 @@ bool RedstoneWireTile::canRedstoneConnectTo(TileSource* region, int x, int y, in
 	else if(id == 0)
 		return false;
 	else if(id != 93 && id != 94) // TODO
-		return Tile::tiles[id]->isSignalSource();
+		return Tile::tiles[id]->isSignalSource() && side != -1;
 	else {
 		int data = region->getData(x, y, z);
 		return side == (data & 3) || side == Facing::OPPOSITE_FACING[data & 3];
