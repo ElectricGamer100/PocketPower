@@ -23,7 +23,7 @@
 
 #include "mcperedstone/world/level/tile/RedstoneWireTile.h"
 #include "mcperedstone/world/level/tile/NotGateTile.h"
-#include "mcperedstone/world/level/tile/PressurePlateTile.h"
+#include "mcperedstone/world/level/tile/LightPressurePlateTile.h"
 #include "mcperedstone/world/level/tile/LeverTile.h"
 #include "mcperedstone/world/level/tile/LampTile.h"
 #include "mcperedstone/world/level/tile/ButtonTile.h"
@@ -80,8 +80,8 @@ void Tile$initTiles() {
 	Tile::redStoneDust = new RedstoneWireTile(55, "redstone_dust_cross", &Material::circuits);
 	Tile::notGate_off = new NotGateTile(75, "redstone_torch_off");
 	Tile::notGate_on = new NotGateTile(76, "redstone_torch_on");
-	Tile::pressurePlate_stone = new PressurePlateTile(70, "stone", &Material::circuits);
-	Tile::pressurePlate_wood = new PressurePlateTile(72, "planks", &Material::circuits);
+	Tile::pressurePlate_stone = new LightPressurePlateTile(70, "stone", &Material::stone, LightPressurePlateTile::SENSITIVITY::MOBS);
+	Tile::pressurePlate_wood = new LightPressurePlateTile(72, "planks", &Material::wood, LightPressurePlateTile::SENSITIVITY::EVERYTHING);
 	Tile::lever = new LeverTile(69, "lever", &Material::circuits);
 	Tile::offlamp = new LampTile(123, "redstone_lamp_off", &Material::stone);
 	Tile::onlamp = new LampTile(124, "redstone_lamp_on", &Material::stone);

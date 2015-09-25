@@ -1,7 +1,7 @@
 #pragma once
 
 #include "mcpe/world/level/tile/Tile.h"
-#include "mcpe/world/entity/Entity.h"
+class Entity;
 class AABB;
 class TileSource;
 
@@ -22,8 +22,10 @@ public:
 	virtual bool isSignalSource();
 	virtual void onRemove(TileSource*, int, int, int);
 
-	bool isWood();
-	void setStateIfMobInteractsWithPlate(TileSource*, int, int, int);
-	bool _listIncludesMob(EntityList&);
-	bool _isMob(const Entity*);
+	void setStateIfMobInteractsWithPlate(TileSource*, int, int, int, int);
+
+protected:
+	virtual int getPower(TileSource*, int, int, int) = 0;
+	virtual int getPowerFromData(int) = 0;
+	virtual int getDataFromPower(int) = 0;
 };
