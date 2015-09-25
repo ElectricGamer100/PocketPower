@@ -110,11 +110,6 @@ AABB const& PressurePlateTile::getVisualShape(TileSource* region, int x, int y, 
 	return aabb;
 }
 
-AABB const& PressurePlateTile::getVisualShape(unsigned char data, AABB& aabb, bool b) {
-	aabb.set(0.0F, 0.5F - 0.125F, 0.0F, 1.0F, 0.5F + 0.125F, 1.0F);
-	return aabb;
-}
-
 bool PressurePlateTile::isWood() {
 	return id == 72;
 }

@@ -17,7 +17,6 @@ public:
 	virtual void onPlace(TileSource*, int, int, int);
 	virtual void tick(TileSource*, int, int, int, Random*);
 	virtual AABB const& getVisualShape(TileSource*, int, int, int, AABB&, bool);
-	virtual AABB const& getVisualShape(unsigned char, AABB&, bool);
 	virtual int getSignal(TileSource*, int, int, int, int);
 	virtual int getDirectSignal(TileSource*, int, int, int, int);
 	virtual bool isSignalSource();
