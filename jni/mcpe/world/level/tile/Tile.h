@@ -308,6 +308,8 @@ public:
 	static Tile* buttonWood; // 143
 	static Tile* skull; // 144
 	static Tile* anvil; // 145
+	static Tile* pressurePlate_gold; // 147
+	static Tile* pressurePlate_iron; // 148
 	static Tile* redstoneBlock; // 152
 	static Tile* quartzOre; // 153
 	static Tile* quartzBlock; // 155

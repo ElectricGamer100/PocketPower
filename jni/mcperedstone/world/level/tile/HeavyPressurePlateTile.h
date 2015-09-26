@@ -3,7 +3,7 @@
 
 class HeavyPressurePlateTile : public PressurePlateTile {
 public:
-	HeavyPressurePlateTile(int, const std::string&, const std::string&, const Material*);
+	HeavyPressurePlateTile(int, const std::string&, const std::string&, const Material*, int);
 
 	virtual int getTickDelay();
 
