@@ -6,7 +6,6 @@
 
 #include "virtualhook.h"
 
-#include "mcpe/SharedConstants.h"
 #include "mcpe/client/renderer/tile/TileTessellator.h"
 #include "mcpe/client/gui/screens/CreativeInventoryScreen.h"
 #include "mcpe/world/level/TilePos.h"
@@ -127,7 +126,6 @@ bool Item$useOn(Item* self, ItemInstance* item, Player* player, int x, int y, in
 
 
 JNIEXPORT jint JNI_OnLoad(JavaVM* vm, void* reserved) {
-	SharedConstants::BetaVersion = 0;
 
 	MSHookFunction((void*) &Tile::initTiles, (void*) &Tile$initTiles, (void**) &_Tile$initTiles);
 	MSHookFunction((void*) &TileTessellator::tessellateInWorld, (void*) &TileTessellator$tessellateInWorld, (void**) &_TileTessellator$tessellateInWorld);
