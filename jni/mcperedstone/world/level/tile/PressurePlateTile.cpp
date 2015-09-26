@@ -69,9 +69,9 @@ void PressurePlateTile::setStateIfMobInteractsWithPlate(TileSource* region, int 
 	}
 
 	if(shouldBePowered && !isPowered)
-		//region->getLevel()->playSound(x + 0.5F, y + 0.1F, z + 0.5F, "random.click", 0.3F, 0.6F);
+		;//region->getLevel()->playSound(x + 0.5F, y + 0.1F, z + 0.5F, "random.click", 0.3F, 0.6F);
 	if(!shouldBePowered && isPowered)
-		//region->getLevel()->playSound(x + 0.5F, y + 0.1F, z + 0.5F, "random.click", 0.3F, 0.5F);
+		;//region->getLevel()->playSound(x + 0.5F, y + 0.1F, z + 0.5F, "random.click", 0.3F, 0.5F);
 
 	if(shouldBePowered)
 		region->scheduleBlockUpdate(x, y, z, id, getTickDelay());

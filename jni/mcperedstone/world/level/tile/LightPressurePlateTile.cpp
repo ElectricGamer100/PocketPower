@@ -19,10 +19,12 @@ int LightPressurePlateTile::getPower(TileSource* region, int x, int y, int z) {
 	AABB aabb({x + 0.125F, y, z + 0.125F}, {(x + 1) - 0.125F, y + 0.25F, (z + 1) - 0.125F});
 	EntityList list = region->getEntities(NULL, aabb);
 
-	if(list.size() > 0)
+	if(list.size() <= 0)
 		return 0;
 	if(sensitivity == SENSITIVITY::EVERYTHING || (sensitivity == SENSITIVITY::MOBS && _listIncludesMob(list)))
 		return 15;
+	
+	return 0;
 }
 
 bool LightPressurePlateTile::_EntityisMob(const Entity* entity) {

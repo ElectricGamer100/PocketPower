@@ -9,7 +9,7 @@ public:
 		MOBS
 	};
 
-	LightPressurePlateTile(int, const std::string, const Material*, SENSITIVITY);
+	LightPressurePlateTile(int, const std::string&, const Material*, SENSITIVITY);
 
 protected:
 	virtual int getPower(TileSource*, int, int, int);
@@ -21,4 +21,4 @@ private:
 
 	bool _listIncludesMob(EntityList&);
 	bool _EntityisMob(const Entity*);
-}
+};
