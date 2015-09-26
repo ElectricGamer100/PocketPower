@@ -7,7 +7,7 @@ class TileSource;
 
 class PressurePlateTile : public Tile {
 public:
-	PressurePlateTile(int, const std::string&, Material const*);
+	PressurePlateTile(int, const std::string&, const std::string&, Material const*);
 
 	virtual void neighborChanged(TileSource*, int, int, int, int, int, int);
 	virtual bool mayPlace(TileSource*, int, int, int);

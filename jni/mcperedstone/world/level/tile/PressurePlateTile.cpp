@@ -2,15 +2,15 @@
 
 #include "mcpe/world/level/TileSource.h"
 
-PressurePlateTile::PressurePlateTile(int id, const std::string& texture, Material const* material) : Tile(id, texture, material) {
+PressurePlateTile::PressurePlateTile(int id, const std::string& name, const std::string& texture, Material const* material) : Tile(id, texture, material) {
 	init();
 	setVisualShape(0.0625F, 0.0F, 0.0625F, 1.0F - 0.0625F, 0.0625F, 1.0F - 0.0625F);
 	Tile::solid[id] = false;
 	Tile::lightBlock[id] = 0;
-	destroyTime = 1.0;
+	destroyTime = 0.5F;
 	creativeTab = CreativeTab::ITEMS;
 	setTicking(true);
-	setNameId(texture);
+	setNameId(name);
 }
 
 bool PressurePlateTile::entityInside(TileSource* region, int x, int y, int z, Entity* entity) {

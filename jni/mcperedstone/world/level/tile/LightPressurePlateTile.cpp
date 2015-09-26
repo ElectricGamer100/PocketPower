@@ -3,7 +3,7 @@
 #include "mcpe/world/level/TileSource.h"
 #include "mcpe/world/phys/AABB.h"
 
-LightPressurePlateTile::LightPressurePlateTile(int blockId, const std::string& texture, const Material* material, SENSITIVITY sensitivity) : PressurePlateTile(blockId, texture, material) {
+LightPressurePlateTile::LightPressurePlateTile(int blockId, const std::string& name, const std::string& texture, const Material* material, SENSITIVITY sensitivity) : PressurePlateTile(blockId, name, texture, material) {
 	this->sensitivity = sensitivity;
 }
 
