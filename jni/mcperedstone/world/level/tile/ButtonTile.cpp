@@ -1,6 +1,7 @@
 #include "ButtonTile.h"
 
 #include "mcpe/world/level/TileSource.h"
+#include "mcpe/world/level/Level.h"
 #include "mcpe/world/entity/player/Player.h"
 #include "mcpe/world/phys/AABB.h"
 
@@ -116,7 +117,7 @@ bool ButtonTile::use(Player* player, int x, int y, int z) {
 	if(power == 0) return true;
 	player->region.setTileAndData(x, y, z, {id, rot + power}, 3);
 	player->region.fireTilesDirty(x, y, z, x, y, z);
-	//ts->getLevel()->playSound(x + 0.5F, y + 0.5F, z + 0.5F, "random.click", 0.3F, 0.6F);
+	player->region.getLevel()->playSound(x + 0.5F, y + 0.5F, z + 0.5F, "random.click", 0.3F, 0.6F);
 	player->region.updateNeighborsAt({x, y, z}, id);
 	if(rot == 1)
 		player->region.updateNeighborsAt({x - 1, y, z}, id);
@@ -249,7 +250,7 @@ void ButtonTile::tick(TileSource* region, int x, int y, int z, Random* random) {
 		region->updateNeighborsAt({x, y - 1, z}, id);
 	else if(rot == 6)
 		region->updateNeighborsAt({x, y + 1, z}, id);
-	//ts->getLevel()->playSound(x + 0.5F, y + 0.5F, z + 0.5F, "random.click", 0.3F, 0.5F);
+	region->getLevel()->playSound(x + 0.5F, y + 0.5F, z + 0.5F, "random.click", 0.3F, 0.5F);
 	region->fireTilesDirty(x, y, z, x, y, z);
 }
 

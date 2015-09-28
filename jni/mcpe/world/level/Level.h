@@ -58,4 +58,5 @@ public:
 	virtual void onAppSuspended();
 
 	bool addParticle(ParticleType, const Vec3&, const Vec3&, int);
+	void playSound(float, float, float, const std::string&, float, float);
 };

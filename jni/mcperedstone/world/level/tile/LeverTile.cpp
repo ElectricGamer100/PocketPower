@@ -2,6 +2,7 @@
 
 #include "mcpe/world/entity/player/Player.h"
 #include "mcpe/world/level/TileSource.h"
+#include "mcpe/world/level/Level.h"
 
 
 LeverTile::LeverTile(int blockId, const std::string& texture, Material const* material) : Tile(blockId, texture, material) {
@@ -27,7 +28,7 @@ bool LeverTile::use(Player* player, int x, int y, int z) {
 	int power = 8 - (data & 8);
 	player->region.setTileAndData(x, y, z, {69, rot + power}, 3);
 	player->region.fireTilesDirty(x, y, z, x, y, z);
-	//ts->getLevel()->playSound((double)i + 0.5D, (double)j + 0.5D, (double)k + 0.5D, "random.click", 0.3F, power <= 0 ? 0.5F : 0.6F);
+	player->region.getLevel()->playSound(x + 0.5F, y + 0.5F, z + 0.5F, "random.click", 0.3F, (power == 0)? 0.5F : 0.6F);
 	player->region.updateNeighborsAt({x, y, z}, 69);
 	if(rot == 1) player->region.updateNeighborsAt({x - 1, y, z}, 69);
 	else if(rot == 2) player->region.updateNeighborsAt({x + 1, y, z}, 69);

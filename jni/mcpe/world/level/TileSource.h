@@ -6,9 +6,12 @@
 #include "TilePos.h"
 class Tile;
 class AABB;
+class Level;
 
 class TileSource {
 public:
+	Level* getLevel() const;
+
 	void updateNeighborsAt(const TilePos&, TileID);
 	FullTile getTile(int, int, int);
 	Tile* getTilePtr(int, int, int);
