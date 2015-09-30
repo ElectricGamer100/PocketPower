@@ -1,4 +1,5 @@
 #include "RepeaterTile.h"
+#include "mcpe/world/material/Material.h"
 #include "mcpe/world/level/TileSource.h"
 #include "mcpe/world/Facing.h"
 #include "mcpe/world/entity/player/Player.h"
@@ -7,15 +8,16 @@
 float RepeaterTile::torchOffset[4] = {-0.0625F, 0.0625F, 0.1875F, 0.3125F};
 int RepeaterTile::delaySettings[4] = {1, 2, 3, 4};
 
-RepeaterTile::RepeaterTile(int blockId, const std::string& texture, bool powered) : Tile(blockId, texture, Material::circuits) {
+RepeaterTile::RepeaterTile(int blockId, const std::string& texture, bool powered) : Tile(blockId, texture, &Material::circuits) {
     init();
-
-    side_texture = TextureUVCoordinateSet(0.625F, 0.0625F, 0.6562F, 0.125F, 16, 16);
+    side_texture = getTextureUVCoordinateSet("stone_slab", 0);
     renderType = 0;
     renderPass = 7;
+	creativeTab = CreativeTab::ITEMS;
     solid[blockId] = false;
     lightBlock[blockId] = 0;
     setVisualShape(0.0F, 0.0F, 0.0F, 1.0F, 0.125F, 1.0F);
+	setNameId("diode");
     this->powered = powered;
 }
 
@@ -45,16 +47,16 @@ int RepeaterTile::getSignal(TileSource* region, int x, int y, int z, int side) {
 
 int RepeaterTile::getDirectSignal(TileSource* region, int x, int y, int z, int side) {
     if(!powered)
-        return false;
+        return 0;
 
     int rot = region->getData(x, y, z) & 3;
     if(rot == 0 && side == 3)
-        return true;
+        return 15;
     if(rot == 1 && side == 4)
-        return true;
+        return 15;
     if(rot == 2 && side == 2)
-        return true;
-    return rot == 3 && side == 5;
+        return 15;
+    return (rot == 3 && side == 5)? 15 : 0;
 }
 
 void RepeaterTile::neighborChanged(TileSource* region, int x, int y, int z, int changedX, int changedY, int changedZ) {
@@ -117,4 +119,4 @@ void RepeaterTile::onPlace(TileSource* region, int x, int y, int z) {
     region->updateNeighborsAt({x, y, z - 1}, id);
     region->updateNeighborsAt({x, y - 1, z}, id);
     region->updateNeighborsAt({x, y + 1, z}, id);
-}
+}
