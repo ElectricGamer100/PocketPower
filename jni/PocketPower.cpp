@@ -22,6 +22,7 @@
 
 #include "mcperedstone/world/level/tile/RedstoneWireTile.h"
 #include "mcperedstone/world/level/tile/NotGateTile.h"
+#include "mcperedstone/world/level/tile/RepeaterTile.h"
 #include "mcperedstone/world/level/tile/LightPressurePlateTile.h"
 #include "mcperedstone/world/level/tile/HeavyPressurePlateTile.h"
 #include "mcperedstone/world/level/tile/LeverTile.h"
@@ -66,6 +67,8 @@ void initTileItems() {
 	new TileItem(34 - 0x100);
 	new TileItem(147 - 0x100);
 	new TileItem(148 - 0x100);
+	new TileItem(93 - 0x100);
+	new TileItem(94 - 0x100);
 }
 
 void initMaterials() {
@@ -92,6 +95,8 @@ void Tile$initTiles() {
 	Tile::pistonExtension = new PistonExtensionTile(34, "stone", &Material::stone);
 	Tile::pressurePlate_gold = new HeavyPressurePlateTile(147, "goldPlate", "gold_block", &Material::metal, 15);
 	Tile::pressurePlate_iron = new HeavyPressurePlateTile(148, "ironPlate", "iron_block", &Material::metal, 150);
+	Tile::diode_off = new RepeaterTile(93, "repeater_off", false);
+	Tile::diode_on = new RepeaterTile(94, "repeater_on", true);
 
 	initTileItems();
 }
@@ -100,7 +105,7 @@ void (*_Item$initCreativeItems)();
 void Item$initCreativeItems() {
 	CreativeTabWorker::reorderCreativeItems();
 	_Item$initCreativeItems();
-
+	Item::addCreativeItem(Tile::diode_off,0);
 	Item::addCreativeItem(Tile::notGate_on, 0);
 	Item::addCreativeItem(Tile::pressurePlate_stone, 0);
 	Item::addCreativeItem(Tile::pressurePlate_wood, 0);
