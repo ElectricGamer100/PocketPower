@@ -15,6 +15,7 @@ class Vec3;
 class RedstoneWireTile;
 class NotGateTile;
 class LeverTile;
+class RepeaterTile;
 
 class TileTessellator {
 public:
@@ -46,4 +47,5 @@ public:
 	bool tessellateLitNotGateInWorld(NotGateTile*, const TilePos&);
 	void tessellateAngledNotGate(Tile*, double, double, double, double, double);
 	bool tessellateLeverInWorld(LeverTile*, const TilePos&);
+	bool tessellateRepeaterInWorld(RepeaterTile*, const TilePos&);
 };

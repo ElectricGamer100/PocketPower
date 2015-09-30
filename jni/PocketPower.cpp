@@ -46,6 +46,8 @@ bool TileTessellator$tessellateInWorld(TileTessellator* self, Tile* tile, const 
 		return self->tessellateRedstoneWireInWorld((RedstoneWireTile*) tile, pos);
 	case 12:
 		return self->tessellateLeverInWorld((LeverTile*) tile, pos);
+	case 15:
+		return self->tessellateRepeaterInWorld((RepeaterTile*) tile, pos);
 	case 100:
 		return self->tessellateLitNotGateInWorld((NotGateTile*) tile, pos);
 	}
