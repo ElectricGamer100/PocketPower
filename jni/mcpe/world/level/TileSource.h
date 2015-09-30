@@ -24,7 +24,7 @@ public:
 
 	void scheduleBlockUpdate(int, int, int, int, int);
 	bool isBlockIndirectlyGettingPowered(int, int, int);
-	bool isBlockProvidingPowerTo(int, int, int, int);
+	int isBlockProvidingPowerTo(int, int, int, int);
 	int getIndirectPowerLevelTo(int, int, int, int);
 	int getBlockPowerInput(int, int, int);
 	bool getIndirectPowerOutput(int, int, int, int);

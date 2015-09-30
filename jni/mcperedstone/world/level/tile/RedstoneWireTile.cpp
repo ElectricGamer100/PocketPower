@@ -61,6 +61,10 @@ void RedstoneWireTile::onRemove(TileSource* region, int x, int y, int z) {
 	Tile::onRemove(region, x, y, z);
 	region->updateNeighborsAt({x, y + 1, z}, id);
 	region->updateNeighborsAt({x, y - 1, z}, id);
+	region->updateNeighborsAt({x + 1, y, z}, id);
+	region->updateNeighborsAt({x - 1, y, z}, id);
+	region->updateNeighborsAt({x, y, z + 1}, id);
+	region->updateNeighborsAt({x, y, z - 1}, id);
 	recalculate(region, x, y, z);
 	updateWires(region, x - 1, y, z);
 	updateWires(region, x + 1, y, z);
@@ -94,7 +98,8 @@ bool RedstoneWireTile::canSurvive(TileSource* region, int x, int y, int z) {
 
 bool RedstoneWireTile::mayPlace(TileSource* region, int x, int y, int z) {
 	if(region->getTile(x, y, z).id != 0) return false;
-	// TODO: Implement placement exceptions for slabs, glowstone
+	if(region->isRedstonePlacementException(x, y - 1, z))
+		return true;
 	return Tile::solid[region->getTile(x, y - 1, z).id];
 }
 
@@ -111,9 +116,7 @@ void RedstoneWireTile::animateTick(TileSource* region, int x, int y, int z, Rand
 
 }
 
-void RedstoneWireTile::tick(TileSource* region, int x, int y, int z, Random* random) {
-
-}
+void RedstoneWireTile::tick(TileSource* region, int x, int y, int z, Random* random) {}
 
 bool RedstoneWireTile::isSignalSource() {
 	return wiresProvidePower;
@@ -162,90 +165,59 @@ void RedstoneWireTile::addCollisionShapes(TileSource& region, int x, int y, int 
 
 void RedstoneWireTile::calculateChanges(TileSource* region, int x, int y, int z, int xx, int yy, int zz) {
 	int oldPower = region->getData(x, y, z);
-	int newPower = 0;
+	int newPower = getStrongerSignal(region, xx, yy, zz, 0);
 	wiresProvidePower = false;
-	bool hasPower = region->isBlockIndirectlyGettingPowered(x, y, z);
+	int receivedPower = region->getStrongestIndirectPower(x, y, z);
 	wiresProvidePower = true;
-	if(hasPower)
-		newPower = 15;
-	else {
-		for(int i2 = 0; i2 < 4; i2++) {
-			int k2 = x;
-			int i3 = z;
-			if(i2 == 0)
-				k2--;
-			if(i2 == 1)
-				k2++;
-			if(i2 == 2)
-				i3--;
-			if(i2 == 3)
-				i3++;
-			if(k2 != xx || y != yy || i3 != zz)
-				newPower = getStrongerSignal(region, k2, y, i3, newPower);
-			if(Tile::solid[region->getTile(k2, y, i3).id] && !Tile::solid[region->getTile(x, y + 1, z).id]) {
-				if(k2 != xx || y + 1 != yy || i3 != zz)
-					newPower = getStrongerSignal(region, k2, y + 1, i3, newPower);
-				continue;
-			}
-			if(!Tile::solid[region->getTile(k2, y, i3).id] && (k2 != xx || y - 1 != yy || i3 != zz))
-				newPower = getStrongerSignal(region, k2, y - 1, i3, newPower);
+	
+	if(receivedPower > 0 && receivedPower > newPower - 1)
+		newPower = receivedPower;
+		
+	int temp = 0;
+		
+	for(int it = 0; it < 4; ++it) {
+		int newX = x;
+		int newZ = z;
+		
+		if(it == 0)
+			newX = x - 1;
+		if(it == 1)
+			++newX;
+		if(it == 2)
+			newZ = z - 1;
+		if(it == 3)
+			++newZ;
+			
+		if(newX != xx || newZ != zz)
+			temp = getStrongerSignal(region, newX, y, newZ, temp);
+			
+		if(solid[region->getTile(newX, y, newZ).id] && !solid[region->getTile(x, y + 1, z).id]) {
+			if((newX != xx || newZ != zz) && y >= yy)
+				temp = getStrongerSignal(region, newX, y + 1, newZ, temp);
 		}
-
-		if(newPower > 0)
-			newPower--;
-		else
-			newPower = 0;
+		else if(!solid[region->getTile(newX, y, newZ).id] && (newX != xx || newZ != zz) && y <= yy)
+			temp = getStrongerSignal(region, newX, y - 1, newZ, temp);
 	}
+	
+	if(temp > newPower)
+		newPower = temp - 1;
+	else if(newPower > 0)
+		--newPower;
+	else
+		newPower = 0;
+		
+	if(receivedPower > newPower - 1)
+		newPower = receivedPower;
+		
 	if(oldPower != newPower) {
-		region->setTileAndData(x, y, z, {id, newPower}, 3);
-		region->fireTilesDirty(x, y, z, x, y, z);
-		for(int j2 = 0; j2 < 4; j2++) {
-			int l2 = x;
-			int j3 = z;
-			int k3 = y - 1;
-			if(j2 == 0)
-				l2--;
-			if(j2 == 1)
-				l2++;
-			if(j2 == 2)
-				j3--;
-			if(j2 == 3)
-				j3++;
-			if(Tile::solid[region->getTile(l2, y, j3).id])
-				k3 += 2;
-			int l3 = 0;
-			l3 = getStrongerSignal(region, l2, y, j3, -1);
-			newPower = region->getData(x, y, z);
-			if(newPower > 0)
-				newPower--;
-			if(l3 >= 0 && l3 != newPower) {
-				calculateChanges(region, l2, y, j3, x, y, z);
-			}
-			l3 = getStrongerSignal(region, l2, k3, j3, -1);
-			newPower = region->getData(x, y, z);
-			if(newPower > 0)
-				newPower--;
-			if(l3 >= 0 && l3 != newPower) {
-				calculateChanges(region, l2, k3, j3, x, y, z);
-			}
-		}
-
-		if(oldPower == 0 || newPower == 0) {
-			region->updateNeighborsAt({x, y, z}, id);
-			region->updateNeighborsAt({x - 1, y, z}, id);
-			region->updateNeighborsAt({x + 1, y, z}, id);
-			region->updateNeighborsAt({x, y - 1, z}, id);
-			region->updateNeighborsAt({x, y + 1, z + 1}, id);
-			region->updateNeighborsAt({x, y, z - 1}, id);
-			region->updateNeighborsAt({x, y, z + 1}, id);
-			/*field_21031_b.add(new ChunkPosition(x, y, z));
-			field_21031_b.add(new ChunkPosition(x - 1, y, z));
-			field_21031_b.add(new ChunkPosition(x + 1, y, z));
-			field_21031_b.add(new ChunkPosition(x, y - 1, z));
-			field_21031_b.add(new ChunkPosition(x, y + 1, z));
-			field_21031_b.add(new ChunkPosition(x, y, z - 1));
-			field_21031_b.add(new ChunkPosition(x, y, z + 1));*/
-		}
+		region->setTileAndData(x, y, z, {id, newPower}, 2);
+		region->updateNeighborsAt({x, y, z}, id);
+		region->updateNeighborsAt({x - 1, y, z}, id);
+		region->updateNeighborsAt({x + 1, y, z}, id);
+		region->updateNeighborsAt({x, y - 1, z}, id);
+		region->updateNeighborsAt({x, y + 1, z}, id);
+		region->updateNeighborsAt({x, y, z - 1}, id);
+		region->updateNeighborsAt({x, y, z + 1}, id);
 	}
 }
 
@@ -253,11 +225,10 @@ void RedstoneWireTile::recalculate(TileSource* region, int x, int y, int z) {
 	calculateChanges(region, x, y, z, x, y, z);
 }
 
-int RedstoneWireTile::getStrongerSignal(TileSource* region, int x, int y, int z, int signal2) {
-	if(region->getTile(x, y, z).id != id) return signal2;
-	int signal3 = region->getData(x, y, z);
-	if(signal3 > signal2) return signal3;
-	else return signal2;
+int RedstoneWireTile::getStrongerSignal(TileSource* region, int x, int y, int z, int signal) {
+	if(region->getTile(x, y, z).id != id) return signal;
+	int signal2 = region->getData(x, y, z);
+	return (signal2 > signal)? signal2: signal;
 }
 
 void RedstoneWireTile::updateWires(TileSource* region, int x, int y, int z) {
@@ -277,10 +248,13 @@ bool RedstoneWireTile::canRedstoneConnectTo(TileSource* region, int x, int y, in
 		return true;
 	else if(id == 0)
 		return false;
-	else if(id != 93 && id != 94) // TODO
+	else if(id != 93 && id != 94)
 		return Tile::tiles[id]->isSignalSource() && side != -1;
 	else {
 		int data = region->getData(x, y, z);
+		if(id == 94)
+			if(side == (data & 3))
+				return true;
 		return side == (data & 3) || side == Facing::OPPOSITE_FACING[data & 3];
 	}
 }

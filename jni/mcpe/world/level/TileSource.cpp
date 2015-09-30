@@ -1,9 +1,7 @@
 #include "TileSource.h"
-
-#include <math.h>
-
 #include "tile/Tile.h"
 #include "../Facing.h"
+#include <cmath>
 
 
 void TileSource::scheduleBlockUpdate(int x, int y, int z, int id, int delay) {
@@ -21,8 +19,8 @@ bool TileSource::isBlockIndirectlyGettingPowered(int x, int y, int z) {
 
 int TileSource::getIndirectPowerLevelTo(int x, int y, int z, int side) {
 	int id = getTile(x, y, z).id;
+	if(id == 0) return 0;
 	if(Tile::solid[id]) return getBlockPowerInput(x, y, z);
-	if(id == 0) return false;
 	else return Tile::tiles[id]->getDirectSignal(this, x, y, z, side);
 }
 
@@ -40,7 +38,7 @@ int TileSource::getStrongestIndirectPower(int x, int y, int z) {
 	return var4;
 }
 
-bool TileSource::isBlockProvidingPowerTo(int x, int y, int z, int side) {
+int TileSource::isBlockProvidingPowerTo(int x, int y, int z, int side) {
 	int id = getTile(x, y, z).id;
 	if(id == 0) return 0;
 	else return Tile::tiles[id]->getSignal(this, x, y, z, side);
@@ -59,38 +57,34 @@ bool TileSource::isBlockGettingPowered(int x, int y, int z) {
 	return isBlockProvidingPowerTo(x + 1, y, z, 5);
 }
 
-int max(int a, int b) {
-	return (a > b)? a : b;
-}
-
 int TileSource::getBlockPowerInput(int x, int y, int z) {
 	int var4 = 0;
-	int var5 = max(var4, isBlockProvidingPowerTo(x, y - 1, z, 0));
+	int var5 = std::max(var4, isBlockProvidingPowerTo(x, y - 1, z, 0));
 
 	if(var5 >= 15)
 		return var5;
 	else {
-		var5 = max(var5, isBlockProvidingPowerTo(x, y + 1, z, 1));
+		var5 = std::max(var5, isBlockProvidingPowerTo(x, y + 1, z, 1));
 
 		if(var5 >= 15)
 			return var5;
 		else {
-			var5 = max(var5, isBlockProvidingPowerTo(x, y, z - 1, 2));
+			var5 = std::max(var5, isBlockProvidingPowerTo(x, y, z - 1, 2));
 
 			if(var5 >= 15)
 				return var5;
 			else {
-				var5 = max(var5, isBlockProvidingPowerTo(x, y, z + 1, 3));
+				var5 = std::max(var5, isBlockProvidingPowerTo(x, y, z + 1, 3));
 
 				if(var5 >= 15)
 					return var5;
 				else {
-					var5 = max(var5, isBlockProvidingPowerTo(x - 1, y, z, 4));
+					var5 = std::max(var5, isBlockProvidingPowerTo(x - 1, y, z, 4));
 
 					if(var5 >= 15)
 						return var5;
 					else {
-						var5 = max(var5, isBlockProvidingPowerTo(x + 1, y, z, 5));
+						var5 = std::max(var5, isBlockProvidingPowerTo(x + 1, y, z, 5));
 						return var5 >= 15 ? var5 : var5;
 					}
 				}
@@ -101,5 +95,5 @@ int TileSource::getBlockPowerInput(int x, int y, int z) {
 
 bool TileSource::isRedstonePlacementException(int x, int y, int z) {
 	int id = getTile(x, y, z).id;
-	return (id == 44 && getData(x, y, z) > 0) || (id == 158 && getData(x, y, z) > 0) || id == 89;
+	return (id == 44 && (getData(x, y, z) & 8) > 0) || (id == 158 && (getData(x, y, z) & 8) > 0) || id == 89;
 }
