@@ -20,6 +20,7 @@
 #include "mcpe/world/entity/player/Player.h"
 #include "mcpe/world/Facing.h"
 
+#include "mcperedstone/world/item/RepeaterItem.h"
 #include "mcperedstone/world/level/tile/RedstoneWireTile.h"
 #include "mcperedstone/world/level/tile/NotGateTile.h"
 #include "mcperedstone/world/level/tile/RepeaterTile.h"
@@ -103,11 +104,19 @@ void Tile$initTiles() {
 	initTileItems();
 }
 
+void (*_Item$initItems)();
+void Item$initItems() {
+	Item::repeater = new RepeaterItem(100);
+	Item::items[356] = Item::repeater;
+	
+	_Item$initItems();
+}
+
 void (*_Item$initCreativeItems)();
 void Item$initCreativeItems() {
 	CreativeTabWorker::reorderCreativeItems();
 	_Item$initCreativeItems();
-	Item::addCreativeItem(Tile::diode_off,0);
+	Item::addCreativeItem(Item::repeater, 0);
 	Item::addCreativeItem(Tile::notGate_on, 0);
 	Item::addCreativeItem(Tile::pressurePlate_stone, 0);
 	Item::addCreativeItem(Tile::pressurePlate_wood, 0);
@@ -142,6 +151,7 @@ bool Item$useOn(Item* self, ItemInstance* item, Player* player, int x, int y, in
 JNIEXPORT jint JNI_OnLoad(JavaVM* vm, void* reserved) {
 
 	MSHookFunction((void*) &Tile::initTiles, (void*) &Tile$initTiles, (void**) &_Tile$initTiles);
+	MSHookFunction((void*) &Item::initItems, (void*) &Item$initItems, (void**) &_Item$initItems);
 	MSHookFunction((void*) &TileTessellator::tessellateInWorld, (void*) &TileTessellator$tessellateInWorld, (void**) &_TileTessellator$tessellateInWorld);
 	MSHookFunction((void*) &Item::initCreativeItems, (void*) &Item$initCreativeItems, (void**) &_Item$initCreativeItems);
 	MSHookFunction((void*) &Item::useOn, (void*) &Item$useOn, (void**) &_Item$useOn);

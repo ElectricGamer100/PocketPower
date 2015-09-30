@@ -1,7 +1,6 @@
 #pragma once
-
 #include <string>
-
+#include <vector>
 class Tile;
 class ItemInstance;
 #include "../../client/renderer/texture/TextureUVCoordinateSet.h"
@@ -64,6 +63,7 @@ public:
 	virtual bool isDye() const;
 	virtual bool isFoil(const ItemInstance*) const;
 	virtual bool isThrowable() const;
+	virtual bool canDestroyInCreative() const;
 	virtual bool isLiquidClipItem(int) const;
 	virtual bool requiresInteract() const;
 	virtual std::string getInteractText() const;
@@ -223,4 +223,5 @@ public:
 	static Item* speckled_melon;
 	static Item* spider_eye;
 	static Item* splash_potion;
+	static Item* repeater;
 };

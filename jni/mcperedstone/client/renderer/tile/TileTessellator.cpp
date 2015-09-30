@@ -344,10 +344,16 @@ bool TileTessellator::tessellateRepeaterInWorld(RepeaterTile* tile, const TilePo
 	var16 = -0.3125F;
 	var12 = tile->torchOffset[delay];
     }
-
-    tessellateAngledNotGate(torch, x + var12, y + var9, z + var14, 0.0F, 0.0F);
-    tessellateAngledNotGate(torch, x + var16, y + var9, z + var18, 0.0F, 0.0F);
-
+	
+	if(torch == Tile::notGate_off) {
+		tessellateTorch(torch, x + var12, y + var9, z + var14, 0.0F, 0.0F);
+    	tessellateTorch(torch, x + var16, y + var9, z + var18, 0.0F, 0.0F);
+	}
+	else {
+    	tessellateAngledNotGate(torch, x + var12, y + var9, z + var14, 0.0F, 0.0F);
+    	tessellateAngledNotGate(torch, x + var16, y + var9, z + var18, 0.0F, 0.0F);
+	}
+		
     bounds.set(0.0F, 0.0F, 0.0F, 1.0F, 0.125F, 1.0F);
     tessellateBlockInWorld(tile, pos);
 
