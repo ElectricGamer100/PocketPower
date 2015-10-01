@@ -95,7 +95,7 @@ const AABB& PistonBaseTile::getVisualShape(TileSource* region, int x, int y, int
 }
 
 int PistonBaseTile::getRotation(int data) {
-	return data & 3;
+	return data & 7;
 }
 
 bool PistonBaseTile::isPowered(int data) {
