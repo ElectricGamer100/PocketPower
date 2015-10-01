@@ -11,7 +11,7 @@ public:
 	virtual const AABB& getVisualShape(TileSource*, int, int, int, AABB&, bool);
 	virtual const AABB& getVisualShape(unsigned char, AABB&, bool);
 	virtual int getPlacementDataValue(Mob*, int, int, int, signed char, float, float, float, int);
-	virtual void addCollisionShapes(TileSource&, int, int, int, const AABB*, std::vector<AABB, std::allocator<AABB>>&);
+	//virtual void addCollisionShapes(TileSource&, int, int, int, const AABB*, std::vector<AABB, std::allocator<AABB>>&);
 	virtual void triggerEvent(TileSource*, int, int, int, int, int);
 	virtual void neighborChanged(TileSource*, int, int, int, int, int, int);
 

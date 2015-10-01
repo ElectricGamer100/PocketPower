@@ -29,6 +29,8 @@
 #include "mcperedstone/world/level/tile/LeverTile.h"
 #include "mcperedstone/world/level/tile/LampTile.h"
 #include "mcperedstone/world/level/tile/ButtonTile.h"
+#include "mcperedstone/world/level/tile/PistonBaseTile.h"
+#include "mcperedstone/world/level/tile/PistonArmTile.h"
 #include "mcperedstone/utils/CreativeTab.h"
 
 
@@ -48,9 +50,14 @@ bool TileTessellator$tessellateInWorld(TileTessellator* self, Tile* tile, const 
 		return self->tessellateLeverInWorld((LeverTile*) tile, pos);
 	case 15:
 		return self->tessellateRepeaterInWorld((RepeaterTile*) tile, pos);
+	case 17:
+		return self->tessellatePistonArmInWorld((PistonArmTile*) tile, pos, true);
 	case 100:
 		return self->tessellateLitNotGateInWorld((NotGateTile*) tile, pos);
 	}
+	
+	if(tile->id == 33 || tile->id == 29)
+		return self->tessellatePistonBaseInWorld((PistonBaseTile*) tile, pos, false);
 
 	return _TileTessellator$tessellateInWorld(self, tile, pos, data, b);
 }
@@ -70,6 +77,9 @@ void initTileItems() {
 	new TileItem(148 - 0x100);
 	new TileItem(93 - 0x100);
 	new TileItem(94 - 0x100);
+	new TileItem(33 - 0x100);
+	new TileItem(29 - 0x100);
+	new TileItem(34 - 0x100);
 }
 
 void initMaterials() {
@@ -97,6 +107,9 @@ void Tile$initTiles() {
 	Tile::pressurePlate_iron = new HeavyPressurePlateTile(148, "ironPlate", "iron_block", &Material::metal, 150);
 	Tile::diode_off = new RepeaterTile(93, "repeater_off", false);
 	Tile::diode_on = new RepeaterTile(94, "repeater_on", true);
+	Tile::pistonNormal = new PistonBaseTile(33, false);
+	Tile::pistonSticky = new PistonBaseTile(29, true);
+	Tile::pistonArm = new PistonArmTile(34);
 
 	initTileItems();
 }
@@ -123,6 +136,8 @@ void Item$initCreativeItems() {
 	Item::addCreativeItem(Tile::button, 0);
 	Item::addCreativeItem(Tile::buttonWood, 0);
 	Item::addCreativeItem(Tile::offlamp, 0);
+	Item::addCreativeItem(Tile::pistonNormal, 0);
+	Item::addCreativeItem(Tile::pistonSticky, 0);
 }
 
 ItemInstance (*_CreativeInventoryScreen$getItemFromType)(CreativeInventoryScreen*, CreativeTab);

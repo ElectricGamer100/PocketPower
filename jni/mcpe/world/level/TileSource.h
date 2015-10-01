@@ -7,6 +7,7 @@
 class Tile;
 class AABB;
 class Level;
+class TileEntity;
 
 class TileSource {
 public:
@@ -18,6 +19,8 @@ public:
 	DataID getData(int, int, int);
 	bool setTileAndData(int, int, int, FullTile, int);
 	void removeTile(int, int, int);
+	void tileEvent(int, int, int, int, int);
+	TileEntity* getTileEntity(const TilePos&);
 	void fireTilesDirty(int, int, int, int, int, int);
 	TileTickingQueue* getTickQueue(TilePos const&);
 	EntityList& getEntities(Entity*, AABB const&);

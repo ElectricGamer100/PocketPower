@@ -1,9 +1,9 @@
 #include "mcpe/world/level/tile/Tile.h"
 
 Tile* Tile::redstoneRail = NULL;
-Tile* Tile::slime_piston = NULL;
-Tile* Tile::piston = NULL;
-Tile* Tile::pistonExtension = NULL;
+Tile* Tile::pistonSticky = NULL;
+Tile* Tile::pistonNormal = NULL;
+Tile* Tile::pistonArm = NULL;
 Tile* Tile::notGate_off = NULL;
 Tile* Tile::notGate_on = NULL;
 Tile* Tile::offlamp = NULL;

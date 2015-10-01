@@ -202,12 +202,12 @@ public:
 	static Tile* bed; // 26
 	static Tile* goldenRail; // 27
 	static Tile* redstoneRail; // 28
-	static Tile* slime_piston; // 29
+	static Tile* pistonSticky; // 29
 	static Tile* web; // 30
 	static Tile* tallgrass; // 31
 	static Tile* deadBush; // 32
-	static Tile* piston; // 33
-	static Tile* pistonExtension; // 34
+	static Tile* pistonNormal; // 33
+	static Tile* pistonArm; // 34
 	static Tile* cloth; // 35
 	static Tile* yellowFlower; // 37
 	static Tile* redFlower; // 38

@@ -42,6 +42,8 @@ public:
 	float velZ; // 84
 	float yaw; // 88
 	float pitch; // 92
+	char filler[92]; // 96
+	float heightOffset; // 188
 
 	virtual ~Entity();
 	virtual void _postInit();

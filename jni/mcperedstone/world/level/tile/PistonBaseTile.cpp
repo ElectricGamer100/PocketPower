@@ -1,6 +1,12 @@
 #include "PistonBaseTile.h"
 #include "mcpe/world/material/Material.h"
 #include "mcpe/world/level/TileSource.h"
+#include "mcpe/world/Facing.h"
+#include "mcpe/world/phys/AABB.h"
+#include "mcpe/world/material/Material.h"
+#include "mcpe/world/entity/Mob.h"
+#include <cmath>
+#include <algorithm>
 
 
 PistonBaseTile::PistonBaseTile(int blockId, bool sticky) : Tile(blockId, &Material::stone) {
@@ -44,7 +50,7 @@ const TextureUVCoordinateSet& PistonBaseTile::getTexture(TileSource* region, int
 
 	if(side == rotation)
 		return (powered)? texture_inner : tex;
-	if(side == Facing::OPPOSITE[rotation])
+	if(side == Facing::OPPOSITE_FACING[rotation])
 		return texture_bottom;
 
 	return texture_side;
@@ -65,19 +71,19 @@ const AABB& PistonBaseTile::getVisualShape(TileSource* region, int x, int y, int
 		case 0:
 			shape.set(0.0F, 0.25F, 0.0F, 1.0F, 1.0F, 1.0F);
 			break;
-		case 0:
+		case 1:
 			shape.set(0.0F, 0.0F, 0.0F, 1.0F, 0.75F, 1.0F);
 			break;
-		case 0:
+		case 2:
 			shape.set(0.0F, 0.0F, 0.25F, 1.0F, 1.0F, 1.0F);
 			break;
-		case 0:
+		case 3:
 			shape.set(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 0.75F);
 			break;
-		case 0:
+		case 4:
 			shape.set(0.25F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
 			break;
-		case 0:
+		case 5:
 			shape.set(0.0F, 0.0F, 0.0F, 0.75F, 1.0F, 1.0F);
 			break;
 		}
@@ -169,10 +175,12 @@ bool PistonBaseTile::canPushRow(TileSource* region, int x, int y, int z, int rot
 	int counter = 0;
 	do {
 		if(yy <= 0 || yy >= 127) break; // Can't push blocks out of the world
-		int blockId = region->getData(xx, yy, zz).id;
+		int blockId = region->getTile(xx, yy, zz).id;
+		if(blockId == 0 || Tile::tiles[blockId] == NULL)
+			break;
 		if(Tile::tiles[blockId]->replaceable) break; // Break things like flowers, etc.
-		if(!isMoveableBlock(Tile::tiles[id], region, xx, yy, zz, true)) return false; // Can't extend the piston :(
-
+		if(!isMoveableBlock(Tile::tiles[blockId], region, xx, yy, zz, true)) return false; // Can't extend the piston :(
+			
 		xx += Facing::STEP_X[rotation];
 		yy += Facing::STEP_Y[rotation];
 		zz += Facing::STEP_Z[rotation];
@@ -182,3 +190,89 @@ bool PistonBaseTile::canPushRow(TileSource* region, int x, int y, int z, int rot
 	return true;
 }
 
+bool PistonBaseTile::isMoveableBlock(Tile* tile, TileSource* region, int x, int y, int z, bool b) {
+	if(tile == Tile::obsidian || tile == Tile::unbreakable || tile == Tile::pistonArm)
+		return true;
+	if(tile == Tile::pistonNormal || tile == Tile::pistonSticky)
+		return !isPowered(region->getData(x, y, z));
+		
+	return region->getTileEntity({x, y, z}) == NULL;
+}
+
+void PistonBaseTile::triggerEvent(TileSource* region, int x, int y, int z, int eventType, int rotation) {
+	//this->ignoreUpdates = true;
+	if(eventType == 0) {
+		if(actuallyPushRow(region, x, y, z, rotation)) {
+			region->setTileAndData(x, y, z, {id, rotation | 8}, 3);
+			// play sound
+		} else
+			region->setTileAndData(x, y, z, {id, rotation}, 3);
+	} else if(eventType == 1) {
+		if(sticky) {
+			int pullX = x + Facing::STEP_X[rotation] * 2;
+			int pullY = y + Facing::STEP_Y[rotation] * 2;
+			int pullZ = z + Facing::STEP_Z[rotation] * 2;
+			int pullID = region->getTile(pullX, pullY, pullZ).id;
+			int pullData = region->getData(pullX, pullY, pullZ);
+
+			if(Tile::tiles[pullID] != NULL) {
+				if(pullID > 0 && isMoveableBlock(Tile::tiles[pullID], region, pullX, pullY, pullZ, false) && !Tile::tiles[pullID]->replaceable) {
+					region->setTileAndData(pullX - Facing::STEP_X[rotation], pullY - Facing::STEP_Y[rotation], pullZ - Facing::STEP_Z[rotation], {pullID, pullData}, 3);
+					region->setTileAndData(pullX, pullY, pullZ, {0, 0}, 3);
+				}
+			}
+			else
+				region->setTileAndData(pullX - Facing::STEP_X[rotation], pullY - Facing::STEP_Y[rotation], pullZ - Facing::STEP_Z[rotation], {0, 0}, 3);
+		} else {
+			//this->ignoreUpdates = false;
+			region->setTileAndData(x + Facing::STEP_X[rotation], y + Facing::STEP_Y[rotation], z + Facing::STEP_Z[rotation], {0, 0}, 3);
+			//this->ignoreUpdates = true;
+		}
+	}
+	//this->ignoreUpdates = false;
+}
+
+bool PistonBaseTile::actuallyPushRow(TileSource* region, int x, int y, int z, int rotation) {
+	int xx = x + Facing::STEP_X[rotation];
+	int yy = y + Facing::STEP_Y[rotation];
+	int zz = z + Facing::STEP_Z[rotation];
+	int counter = 0;
+	do {
+		if(yy <= 0 || yy >= 127)
+			break;
+		int blockId = region->getTile(xx, yy, zz).id;
+		if(blockId == 0 || Tile::tiles[blockId] == NULL)
+			break;
+		if(!isMoveableBlock(Tile::tiles[blockId], region, xx, yy, zz, true))
+			return false;
+		if(Tile::tiles[blockId]->replaceable)
+			break;
+			
+		// TODO: Drop flowers and such
+		if(counter == 12)
+			return false;
+			
+		xx += Facing::STEP_X[rotation];
+		yy += Facing::STEP_Y[rotation];
+		zz += Facing::STEP_Z[rotation];
+		counter++;
+	} while(counter < 13);
+
+	while(xx != x || yy != y || zz != z) {
+		int i2 = xx - Facing::STEP_X[rotation];
+		int k2 = yy - Facing::STEP_Y[rotation];
+		int l2 = zz - Facing::STEP_Z[rotation];
+		xx = i2;
+		yy = k2;
+		zz = l2;
+		int pushID = region->getTile(xx, yy, zz).id;
+		int pushData = region->getData(xx, yy, zz);
+		if(pushID == id && i2 == x && k2 == y && l2 == z) {
+			region->setTileAndData(xx + Facing::STEP_X[rotation], yy + Facing::STEP_Y[rotation], zz + Facing::STEP_Z[rotation], {34, rotation | (sticky? 8 : 0)}, 3);
+		} else {
+			region->setTileAndData(xx + Facing::STEP_X[rotation], yy + Facing::STEP_Y[rotation], zz + Facing::STEP_Z[rotation], {pushID, pushData}, 3);
+		}
+	}
+	//ts->setTileAndData(xx + Facing::xSide[rot], yy + Facing::ySide[rot], zz + Facing::zSide[rot], 34, rot, 0);
+	return true;
+}
