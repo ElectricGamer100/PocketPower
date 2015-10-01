@@ -29,7 +29,6 @@
 #include "mcperedstone/world/level/tile/LeverTile.h"
 #include "mcperedstone/world/level/tile/LampTile.h"
 #include "mcperedstone/world/level/tile/ButtonTile.h"
-#include "mcperedstone/world/level/tile/PistonExtensionTile.h"
 #include "mcperedstone/utils/CreativeTab.h"
 
 
@@ -67,7 +66,6 @@ void initTileItems() {
 	new TileItem(124 - 0x100);
 	new TileItem(77 - 0x100);
 	new TileItem(143 - 0x100);
-	new TileItem(34 - 0x100);
 	new TileItem(147 - 0x100);
 	new TileItem(148 - 0x100);
 	new TileItem(93 - 0x100);
@@ -95,7 +93,6 @@ void Tile$initTiles() {
 	Tile::onlamp = new LampTile(124, "redstone_lamp_on", &Material::stone);
 	Tile::button = new ButtonTile(77, "stone", &Material::circuits);
 	Tile::buttonWood = new ButtonTile(143, "planks", &Material::circuits);
-	Tile::pistonExtension = new PistonExtensionTile(34, "stone", &Material::stone);
 	Tile::pressurePlate_gold = new HeavyPressurePlateTile(147, "goldPlate", "gold_block", &Material::metal, 15);
 	Tile::pressurePlate_iron = new HeavyPressurePlateTile(148, "ironPlate", "iron_block", &Material::metal, 150);
 	Tile::diode_off = new RepeaterTile(93, "repeater_off", false);
@@ -126,7 +123,6 @@ void Item$initCreativeItems() {
 	Item::addCreativeItem(Tile::button, 0);
 	Item::addCreativeItem(Tile::buttonWood, 0);
 	Item::addCreativeItem(Tile::offlamp, 0);
-	Item::addCreativeItem(Tile::pistonExtension, 0);
 }
 
 ItemInstance (*_CreativeInventoryScreen$getItemFromType)(CreativeInventoryScreen*, CreativeTab);

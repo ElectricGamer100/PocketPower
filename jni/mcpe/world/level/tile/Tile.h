@@ -31,7 +31,7 @@ public:
 
 
 		SoundType() {};
-		SoundType(std::string const&, float, float);
+		SoundType(const std::string&, float, float);
 	};
 
 
@@ -81,18 +81,18 @@ public:
 
 	Tile(int, Material const*);
 	Tile(int, TextureUVCoordinateSet, Material const*);
-	Tile(int, std::string const&, Material const*);
+	Tile(int, const std::string&, Material const*);
 
 	virtual ~Tile();
 	virtual void onFertilized(TileSource*, int, int, int);
-	virtual AABB const& getVisualShape(TileSource*, int, int, int, AABB&, bool);
-	virtual AABB const& getVisualShape(unsigned char, AABB&, bool);
-	virtual AABB const& getCollisionShape(AABB&, TileSource&, int, int, int);
+	virtual const AABB& getVisualShape(TileSource*, int, int, int, AABB&, bool);
+	virtual const AABB& getVisualShape(unsigned char, AABB&, bool);
+	virtual const AABB& getCollisionShape(AABB&, TileSource&, int, int, int);
 	virtual bool isObstructingChests(TileSource*, int, int, int);
 	virtual bool shouldRenderFace(TileSource*, int, int, int, signed char, const AABB&) const;
-	virtual TextureUVCoordinateSet const& getTexture(signed char);
-	virtual TextureUVCoordinateSet const& getTexture(signed char, int);
-	virtual TextureUVCoordinateSet const& getTexture(TileSource*, int, int, int, signed char);
+	virtual const TextureUVCoordinateSet& getTexture(signed char);
+	virtual const TextureUVCoordinateSet& getTexture(signed char, int);
+	virtual const TextureUVCoordinateSet& getTexture(TileSource*, int, int, int, signed char);
 	virtual void getTessellatedUVs();
 	virtual void getCarriedTexture(signed char, int);
 	virtual AABB* getAABB(TileSource*, int, int, int, AABB&, int, bool, int);
@@ -117,7 +117,7 @@ public:
 	virtual void neighborChanged(TileSource*, int, int, int, int, int, int);
 	virtual void onPlace(TileSource*, int, int, int);
 	virtual void onRemove(TileSource*, int, int, int);
-	virtual void getSecondPart(TileSource&, TilePos const&, TilePos&);
+	virtual void getSecondPart(TileSource&, const TilePos&, TilePos&);
 	virtual void onGraphicsModeChanged(bool, bool);
 	virtual int getResource(Random*, int, int);
 	virtual int getResourceCount(Random*, int, int);
