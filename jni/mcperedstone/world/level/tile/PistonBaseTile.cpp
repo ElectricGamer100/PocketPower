@@ -3,7 +3,6 @@
 #include "mcpe/world/level/TileSource.h"
 #include "mcpe/world/Facing.h"
 #include "mcpe/world/phys/AABB.h"
-#include "mcpe/world/material/Material.h"
 #include "mcpe/world/entity/Mob.h"
 #include <cmath>
 #include <algorithm>
@@ -50,7 +49,8 @@ const TextureUVCoordinateSet& PistonBaseTile::getTexture(TileSource* region, int
 
 	if(side == rotation)
 		return (powered)? texture_inner : tex;
-	if(side == Facing::OPPOSITE_FACING[rotation])
+	int opposite[6] = { 1, 0, 3, 2, 5, 4 };
+	if(side == opposite[rotation])
 		return texture_bottom;
 
 	return texture_side;
@@ -111,7 +111,7 @@ void PistonBaseTile::onPlace(TileSource* region, int x, int y, int z) {
 }
 
 void PistonBaseTile::updateState(TileSource* region, int x, int y, int z) {
-	int data = region->getData(x, y, z); // You might just get hit with the RICO
+	int data = region->getData(x, y, z);
 	int rotation = getRotation(data);
 	if(data == 7)
 		return;
@@ -192,7 +192,7 @@ bool PistonBaseTile::canPushRow(TileSource* region, int x, int y, int z, int rot
 
 bool PistonBaseTile::isMoveableBlock(Tile* tile, TileSource* region, int x, int y, int z, bool b) {
 	if(tile == Tile::obsidian || tile == Tile::unbreakable || tile == Tile::pistonArm)
-		return true;
+		return false;
 	if(tile == Tile::pistonNormal || tile == Tile::pistonSticky)
 		return !isPowered(region->getData(x, y, z));
 		

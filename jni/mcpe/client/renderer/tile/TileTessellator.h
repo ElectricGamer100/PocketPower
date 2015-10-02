@@ -52,7 +52,7 @@ public:
 	bool tessellateRepeaterInWorld(RepeaterTile*, const TilePos&);
 	bool tessellatePistonBaseInWorld(PistonBaseTile*, const TilePos&, bool);
 	bool tessellatePistonArmInWorld(PistonArmTile*, const TilePos&, bool);
-	void tessellatePistonRodUD(float, float, float, float, float, float, float, float);
-	void tessellatePistonRodSN(float, float, float, float, float, float, float, float);
-	void tessellatePistonRodEW(float, float, float, float, float, float, float, float);
+	void tessellatePistonRodUD(PistonArmTile*, float, float, float, float, float, float, float, float);
+	void tessellatePistonRodSN(PistonArmTile*, float, float, float, float, float, float, float, float);
+	void tessellatePistonRodEW(PistonArmTile*, float, float, float, float, float, float, float, float);
 };

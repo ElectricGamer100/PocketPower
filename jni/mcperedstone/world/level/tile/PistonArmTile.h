@@ -13,7 +13,6 @@ public:
 	static int getRotation(int);
 	static bool isSticky(int);
 	
-private:
 	TextureUVCoordinateSet texture_sticky;
 	TextureUVCoordinateSet texture_side;
 };
