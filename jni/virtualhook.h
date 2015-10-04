@@ -22,6 +22,13 @@ int GetVtableIndex(char* vtname, char* function) {
 	return index;
 }
 
+uintptr_t VirtualHook(void** vtable, int index, void* myfunc) {
+	if(index == -1) return 0x00000000;
+	uintptr_t real = (uintptr_t) vtable[index];
+	vtable[index] = myfunc;
+	return real;
+}
+
 uintptr_t VirtualHook(char* vtname, char* mangled, void* myfunc) {
 	void** vtable = (void**) ((int) dlsym(RTLD_DEFAULT, vtname) + 8);
 	int index = GetVtableIndex(vtname, mangled);

@@ -500,7 +500,7 @@ bool TileTessellator::tessellatePistonArmInWorld(PistonArmTile* tile, const Tile
 }
 
 void TileTessellator::tessellatePistonRodUD(PistonArmTile* tile, float x, float xx, float y, float yy, float z, float zz, float a, float b) {
-    TextureUVCoordinateSet piston = tile->texture_side;
+    TextureUVCoordinateSet piston = TextureUVCoordinateSet(0.6875F, 0.375F, 0.7187F, 0.4375F, 16, 16);
 	
     float var18 = piston.minU;
     float var20 = piston.minV;
@@ -514,7 +514,7 @@ void TileTessellator::tessellatePistonRodUD(PistonArmTile* tile, float x, float 
 }
 
 void TileTessellator::tessellatePistonRodSN(PistonArmTile* tile, float x, float xx, float y, float yy, float z, float zz, float a, float b) {
-    TextureUVCoordinateSet piston = tile->texture_side;
+    TextureUVCoordinateSet piston = TextureUVCoordinateSet(0.6875F, 0.375F, 0.7187F, 0.4375F, 16, 16);
 
     float var18 = piston.minU;
     float var20 = piston.minV;
@@ -528,7 +528,7 @@ void TileTessellator::tessellatePistonRodSN(PistonArmTile* tile, float x, float 
 }
 
 void TileTessellator::tessellatePistonRodEW(PistonArmTile* tile, float x, float xx, float y, float yy, float z, float zz, float a, float b) {
-    TextureUVCoordinateSet piston = tile->texture_side;
+    TextureUVCoordinateSet piston = TextureUVCoordinateSet(0.6875F, 0.375F, 0.7187F, 0.4375F, 16, 16);
 	
     float var18 = piston.minU;
     float var20 = piston.minV;

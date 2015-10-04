@@ -31,6 +31,7 @@
 #include "mcperedstone/world/level/tile/ButtonTile.h"
 #include "mcperedstone/world/level/tile/PistonBaseTile.h"
 #include "mcperedstone/world/level/tile/PistonArmTile.h"
+#include "mcperedstone/world/level/tile/RedstoneBlockTile.h"
 #include "mcperedstone/utils/CreativeTab.h"
 
 
@@ -110,6 +111,7 @@ void Tile$initTiles() {
 	Tile::pistonNormal = new PistonBaseTile(33, false);
 	Tile::pistonSticky = new PistonBaseTile(29, true);
 	Tile::pistonArm = new PistonArmTile(34);
+	Tile::redstoneBlock = new RedstoneBlockTile(152);
 
 	initTileItems();
 }
@@ -172,6 +174,6 @@ JNIEXPORT jint JNI_OnLoad(JavaVM* vm, void* reserved) {
 
 	VirtualHook("_ZTV7TntTile", "_ZN7TntTile15neighborChangedEP10TileSourceiiiiii", (void*) &TntTile::_neighborChanged);
 	VirtualHook("_ZTV7TntTile", "_ZN4Tile7onPlaceEP10TileSourceiii", (void*) &TntTile::onPlace);
-
+	
 	return JNI_VERSION_1_2;
 }

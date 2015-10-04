@@ -20,7 +20,7 @@ bool TileSource::isBlockIndirectlyGettingPowered(int x, int y, int z) {
 int TileSource::getIndirectPowerLevelTo(int x, int y, int z, int side) {
 	int id = getTile(x, y, z).id;
 	if(id == 0) return 0;
-	if(Tile::solid[id]) return getBlockPowerInput(x, y, z);
+	if(Tile::solid[id] && id != Tile::redstoneBlock->id) return getBlockPowerInput(x, y, z);
 	else return Tile::tiles[id]->getDirectSignal(this, x, y, z, side);
 }
 
