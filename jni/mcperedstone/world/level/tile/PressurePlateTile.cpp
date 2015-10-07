@@ -1,5 +1,5 @@
 #include "PressurePlateTile.h"
-
+#include "mcpe/world/entity/player/Player.h"
 #include "mcpe/world/level/TileSource.h"
 #include "mcpe/world/level/Level.h"
 
@@ -49,12 +49,12 @@ bool PressurePlateTile::isSignalSource() {
 	return true;
 }
 
-void PressurePlateTile::onRemove(TileSource* region, int x, int y, int z) {
-	if(getPowerFromData(region->getData(x, y, z)) > 0) {
-		region->updateNeighborsAt({x, y, z}, id);
-		region->updateNeighborsAt({x, y - 1, z}, id);
+void PressurePlateTile::playerDestroy(Player* player, int x, int y, int z, int side) {
+	if(getPowerFromData(player->region.getData(x, y, z)) > 0) {
+		player->region.updateNeighborsAt({x, y, z}, id);
+		player->region.updateNeighborsAt({x, y - 1, z}, id);
 	}
-	Tile::onRemove(region, x, y, z);
+	Tile::onRemove(&player->region, x, y, z);
 }
 
 void PressurePlateTile::setStateIfMobInteractsWithPlate(TileSource* region, int x, int y, int z, int power) {

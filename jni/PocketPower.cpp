@@ -33,6 +33,7 @@
 #include "mcperedstone/world/level/tile/PistonArmTile.h"
 #include "mcperedstone/world/level/tile/RedstoneBlockTile.h"
 #include "mcperedstone/utils/CreativeTab.h"
+#include "mcperedstone/utils/PocketPowerCraftingManager.h"
 
 
 extern void (*_TileEntity$initTileEntities)();
@@ -86,6 +87,13 @@ void initTileItems() {
 void initMaterials() {
 	Material::circuits.blocksMotion = false;
 	Material::circuits.isSolid = false;
+}
+
+void (*_Recipes$init)(Recipes*);
+void Recipes$init(Recipes* self) {
+	_Recipes$init(self);
+	
+	//PocketPowerCraftingManager::initRecipes();
 }
 
 void (*_Tile$initTiles)();
@@ -169,6 +177,7 @@ JNIEXPORT jint JNI_OnLoad(JavaVM* vm, void* reserved) {
 	MSHookFunction((void*) &Item::initCreativeItems, (void*) &Item$initCreativeItems, (void**) &_Item$initCreativeItems);
 	MSHookFunction((void*) &Item::useOn, (void*) &Item$useOn, (void**) &_Item$useOn);
 	MSHookFunction((void*) &CreativeInventoryScreen::getItemFromType, (void*) &CreativeInventoryScreen$getItemFromType, (void**) &_CreativeInventoryScreen$getItemFromType);
+	MSHookFunction((void*) &Recipes::init, (void*) &Recipes$init, (void**) &_Recipes$init);
 	MSHookFunction((void*) &TileEntity::initTileEntities, (void*) &TileEntity$initTileEntities, (void**) &_TileEntity$initTileEntities);
 	MSHookFunction((void*) &TileEntityFactory::createTileEntity, (void*) &TileEntityFactory$createTileEntity, (void**) &_TileEntityFactory$createTileEntity);
 

@@ -232,6 +232,14 @@ void PistonBaseTile::triggerEvent(TileSource* region, int x, int y, int z, int e
 	//this->ignoreUpdates = false;
 }
 
+void PistonBaseTile::pushEntitiesInto(TileSource* region, int x, int y, int z, int xx, int yy, int zz) {
+	AABB bb({x, y, z}, {x + 1, y + 1, z + 1});
+	EntityList& list = region->getEntities(NULL, bb);
+	for(Entity* e : list) {
+		e->move(xx, yy, zz);
+	}
+}
+
 bool PistonBaseTile::actuallyPushRow(TileSource* region, int x, int y, int z, int rotation) {
 	int xx = x + Facing::STEP_X[rotation];
 	int yy = y + Facing::STEP_Y[rotation];
@@ -257,6 +265,8 @@ bool PistonBaseTile::actuallyPushRow(TileSource* region, int x, int y, int z, in
 		zz += Facing::STEP_Z[rotation];
 		counter++;
 	} while(counter < 13);
+	
+	pushEntitiesInto(region, xx, yy, zz, Facing::STEP_X[rotation], Facing::STEP_Y[rotation], Facing::STEP_Z[rotation]);
 
 	while(xx != x || yy != y || zz != z) {
 		int i2 = xx - Facing::STEP_X[rotation];

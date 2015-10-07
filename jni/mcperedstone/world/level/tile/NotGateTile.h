@@ -3,6 +3,7 @@
 #include "mcpe/world/level/tile/TorchTile.h"
 class Random;
 class TileSource;
+class Player;
 
 class NotGateTile : public TorchTile {
 public:
@@ -13,6 +14,7 @@ public:
 	virtual bool canSurvive(TileSource*, int, int, int);
 	virtual void onPlace(TileSource*, int, int, int);
 	virtual void onRemove(TileSource*, int, int, int);
+	virtual void playerDestroy(Player*, int, int, int, int);
 	virtual bool isSignalSource();
 	virtual int getTickDelay();
 	virtual int getDirectSignal(TileSource*, int, int, int, int);

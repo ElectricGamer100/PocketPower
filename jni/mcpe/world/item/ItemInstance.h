@@ -11,9 +11,10 @@ public:
 	CompoundTag* userData;
 	Item* item;
 	Tile* tile;
-	char filler[12];
+	char filler[4];
 
 	void _setItem(int);
 	ItemInstance(int, int, int);
 	ItemInstance(const ItemInstance&);
+	ItemInstance();
 };

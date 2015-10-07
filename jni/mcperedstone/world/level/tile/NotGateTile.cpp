@@ -1,6 +1,7 @@
 #include "NotGateTile.h"
 
 #include "mcpe/world/level/TileSource.h"
+#include "mcpe/world/entity/player/Player.h"
 
 NotGateTile::NotGateTile(int blockId, const std::string& texture) : TorchTile(blockId, texture) {
 	init();
@@ -68,6 +69,12 @@ void NotGateTile::onPlace(TileSource* region, int x, int y, int z) {
 void NotGateTile::onRemove(TileSource* region, int x, int y, int z) {
 	if(isActive()) {
 		region->scheduleBlockUpdate(x, y, z, id, 0);
+	}
+}
+
+void NotGateTile::playerDestroy(Player* player, int x, int y, int z, int side) {
+	if(isActive()) {
+		player->region.scheduleBlockUpdate(x, y, z, id, 0);
 	}
 }
 
