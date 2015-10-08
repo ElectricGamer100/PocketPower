@@ -5,15 +5,12 @@
 
 class PocketPowerCraftingManager {
 public:
-	static void initRecipes();
+	static void initRecipes(Recipes*);
 
 private:
 	static Recipes* _Instance;
 	static std::vector<Recipes::Type> _ingredients;
 	
 	static void pushIngredient(int, int, char);
-	static void addRecipe(const ItemInstance&, std::string);
-	static void addRecipe(const ItemInstance&, std::string, std::string);
-	static void addRecipe(const ItemInstance&, std::string, std::string, std::string);
-	static void addRecipe(const ItemInstance&, const std::vector<std::string>&);
+	static void addRecipe(int, int, const std::vector<std::string>&);
 };

@@ -16,5 +16,6 @@ public:
 	void _setItem(int);
 	ItemInstance(int, int, int);
 	ItemInstance(const ItemInstance&);
+	ItemInstance(const Item*);
 	ItemInstance();
 };

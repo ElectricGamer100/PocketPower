@@ -1,19 +1,45 @@
 #include "PocketPowerCraftingManager.h"
 #include "mcpe/world/item/ItemInstance.h"
 #include "mcpe/world/item/Item.h"
-#include "mcpe/world/level/tile/Tile.h"
-#include "mcpe/world/item/CompoundTag.h"
+#include "mcpe/client/Recipes.h"
 
 Recipes* PocketPowerCraftingManager::_Instance;
 std::vector<Recipes::Type> PocketPowerCraftingManager::_ingredients;
 
-void PocketPowerCraftingManager::initRecipes() {
-	_Instance = Recipes::instance;
+void PocketPowerCraftingManager::initRecipes(Recipes* instance) {
+	_Instance = instance;
 	
-	pushIngredient(3, 0, '#');
-	ItemInstance item(42, 1, 1);
-	item.userData = new CompoundTag();
-	//addRecipe(item, "##", "##");
+		pushIngredient(331, 0, 'R');
+		pushIngredient(280, 0, 'S');
+	addRecipe(76, 2, {"R ", "S "});
+		pushIngredient(5, 0, 'W');
+	addRecipe(72, 2, {"  ", "WW"});
+		pushIngredient(1, 0, 'S');
+	addRecipe(70, 2, {"  ", "SS"});
+		pushIngredient(5, 0, 'W');
+	addRecipe(143, 1, {"W ", "  "});
+		pushIngredient(1, 0, 'S');
+	addRecipe(77, 1, {"S ", "  "});
+		pushIngredient(280, 0, 'S');
+		pushIngredient(4, 0, 'C');
+	addRecipe(69, 1, {"S ", "C "});
+		pushIngredient(1, 0, 'S');
+		pushIngredient(331, 0, 'R');
+		pushIngredient(76, 0, 'T');
+	addRecipe(356, 1, {"   ", "TRT", "SSS"});
+		pushIngredient(331, 0, 'R');
+		pushIngredient(89, 0, 'G');
+	addRecipe(123, 1, {" R ", "RGR", " R "});
+		pushIngredient(331, 0, 'R');
+		pushIngredient(5, 0, 'W');
+		pushIngredient(4, 0, 'C');
+		pushIngredient(265, 0, 'I');
+	addRecipe(33, 1, {"WWW", "CIC", "CRC"});
+		pushIngredient(33, 0, 'P');
+		pushIngredient(341, 0, 'S');
+	addRecipe(29, 1, {"S ", "P "});
+		pushIngredient(265, 0, 'I');
+	addRecipe(330, 1, {"II ", "II ", "II "});
 }
 
 void PocketPowerCraftingManager::pushIngredient(int id, int data, char letter) {
@@ -21,32 +47,9 @@ void PocketPowerCraftingManager::pushIngredient(int id, int data, char letter) {
 	_ingredients.push_back(type);
 }
 
-void PocketPowerCraftingManager::addRecipe(const ItemInstance& item, std::string str1) {
-	std::vector<std::string> vec;
-	vec.push_back(str1);
-	addRecipe(item, vec);
-}
-
-void PocketPowerCraftingManager::addRecipe(const ItemInstance& item, std::string str1, std::string str2) {
-	std::vector<std::string> vec;
-	vec.push_back(str1);
-	vec.push_back(str2);
-	addRecipe(item, vec);
-}
-
-void PocketPowerCraftingManager::addRecipe(const ItemInstance& item, std::string str1, std::string str2, std::string str3) {
-	std::vector<std::string> vec;
-	vec.push_back(str1);
-	vec.push_back(str2);
-	vec.push_back(str3);
-	addRecipe(item, vec);
-}
-
-void PocketPowerCraftingManager::addRecipe(const ItemInstance& item, const std::vector<std::string>& vec) {
-	ItemInstance item2;
-	//item2.userData = new CompoundTag();
-	Recipes::Type type {Item::items[280], NULL, item2};
-	type.letter[0] = '#';
-	_Instance->addShapedRecipe(item, {"##", "##"}, {type});
+void PocketPowerCraftingManager::addRecipe(int outputID, int outputCount, const std::vector<std::string>& shape) {
+	ItemInstance output(Item::items[outputID]);
+	output.count = outputCount;
+	_Instance->addShapedRecipe(output, shape, _ingredients);
 	_ingredients.clear();
 }

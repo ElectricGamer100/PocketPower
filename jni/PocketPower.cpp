@@ -9,6 +9,7 @@
 #include "mcpe/client/renderer/tile/TileTessellator.h"
 #include "mcpe/client/gui/screens/CreativeInventoryScreen.h"
 #include "mcpe/world/level/TilePos.h"
+#include "mcpe/client/Recipes.h"
 #include "mcpe/world/level/TileSource.h"
 #include "mcpe/world/level/tile/TntTile.h"
 #include "mcpe/world/level/tile/EntityTile.h"
@@ -93,7 +94,7 @@ void (*_Recipes$init)(Recipes*);
 void Recipes$init(Recipes* self) {
 	_Recipes$init(self);
 	
-	//PocketPowerCraftingManager::initRecipes();
+	PocketPowerCraftingManager::initRecipes(self);
 }
 
 void (*_Tile$initTiles)();

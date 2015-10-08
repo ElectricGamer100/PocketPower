@@ -11,7 +11,7 @@ public:
 		Item* item;
 		Tile* tile;
 		ItemInstance inst;
-		char letter[4];
+		char letter;
 	};
 
 	static Recipes* getInstance();
