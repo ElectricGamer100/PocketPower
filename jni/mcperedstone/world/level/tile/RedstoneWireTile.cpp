@@ -1,6 +1,7 @@
 #include "RedstoneWireTile.h"
 #include "mcpe/world/entity/player/Player.h"
 #include "mcpe/world/level/TileSource.h"
+#include "mcpe/world/item/Item.h"
 #include "mcpe/world/Facing.h"
 
 
@@ -102,7 +103,7 @@ bool RedstoneWireTile::mayPlace(TileSource* region, int x, int y, int z) {
 
 void RedstoneWireTile::neighborChanged(TileSource* region, int x, int y, int z, int newX, int newY, int newZ) {
 	if(!canSurvive(region, x, y, z)) {
-		popResource(region, x, y, z, ItemInstance(331, 1, 0));
+		popResource(region, x, y, z, ItemInstance(Item::items[getResource(NULL, 0, 0)]));
 		region->removeTile(x, y, z);
 	}
 	recalculate(region, x, y, z);

@@ -1,6 +1,7 @@
 #include "PistonArmTile.h"
 #include "PistonBaseTile.h"
 #include "mcpe/world/level/TileSource.h"
+#include "mcpe/world/entity/player/Player.h"
 #include "mcpe/world/Facing.h"
 #include "mcpe/world/phys/AABB.h"
 #include "mcpe/world/material/Material.h"
@@ -27,11 +28,11 @@ void PistonArmTile::playerDestroy(Player* player, int x, int y, int z, int side)
 	x += Facing::STEP_X[rotation];
 	y += Facing::STEP_Y[rotation];
 	z += Facing::STEP_Z[rotation];
-	int tile = region->getTile(x, y, z).id;
+	int tile = player->region.getTile(x, y, z).id;
 	if(tile == Tile::pistonNormal->id || tile == Tile::pistonSticky->id) {
-		data = region->getData(x, y, z);
+		data = player->region.getData(x, y, z);
 		if(PistonBaseTile::isPowered(data)) {
-			region->setTileAndData(x, y, z, {0, 0}, 0);
+			player->region.setTileAndData(x, y, z, {0, 0}, 0);
 		}
 	}
 }

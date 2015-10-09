@@ -2,6 +2,7 @@
 #include "mcpe/world/material/Material.h"
 #include "mcpe/world/level/TileSource.h"
 #include "mcpe/world/Facing.h"
+#include "mcpe/world/item/Item.h"
 #include "mcpe/world/entity/player/Player.h"
 #include <cmath>
 
@@ -72,8 +73,8 @@ int RepeaterTile::getDirectSignal(TileSource* region, int x, int y, int z, int s
 }
 
 void RepeaterTile::neighborChanged(TileSource* region, int x, int y, int z, int changedX, int changedY, int changedZ) {
-	if(!canSurvive(x, y, z)) {
-		popResource(region, x, y, z, ItemInstance(getResource(NULL, 0, 0), 1, 0));
+	if(!canSurvive(region, x, y, z)) {
+		popResource(region, x, y, z, ItemInstance(Item::items[getResource(NULL, 0, 0)]));
 		region->removeTile(x, y, z);
 	}
     int data = region->getData(x, y, z);

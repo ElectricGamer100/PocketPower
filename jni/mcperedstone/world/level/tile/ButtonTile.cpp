@@ -105,7 +105,7 @@ const AABB& ButtonTile::getVisualShape(TileSource* region, int x, int y, int z, 
 
 void ButtonTile::neighborChanged(TileSource* region, int x, int y, int z, int newX, int newY, int newZ) {
 	if(!canSurvive(region, x, y, z)) {
-		popResource(region, x, y, z, ItemInstance(id, 1, 0));
+		popResource(region, x, y, z, ItemInstance(this));
 		region->removeTile(x, y, z);
 		region->scheduleBlockUpdate(x, y, z, id, 0);
 	}

@@ -141,17 +141,17 @@ void Item$initCreativeItems() {
 	_Item$initCreativeItems();
 	Item::addCreativeItem(Item::door_iron, 0);
 	Item::addCreativeItem(Item::repeater, 0);
-	Item::addCreativeItem(Tile::notGate_on, 0);
-	Item::addCreativeItem(Tile::pressurePlate_stone, 0);
-	Item::addCreativeItem(Tile::pressurePlate_wood, 0);
-	Item::addCreativeItem(Tile::pressurePlate_gold, 0);
-	Item::addCreativeItem(Tile::pressurePlate_iron, 0);
-	Item::addCreativeItem(Tile::lever, 0);
-	Item::addCreativeItem(Tile::button, 0);
-	Item::addCreativeItem(Tile::buttonWood, 0);
-	Item::addCreativeItem(Tile::offlamp, 0);
-	Item::addCreativeItem(Tile::pistonNormal, 0);
-	Item::addCreativeItem(Tile::pistonSticky, 0);
+	Item::addCreativeItem(Item::items[76], 0);
+	Item::addCreativeItem(Item::items[70], 0);
+	Item::addCreativeItem(Item::items[72], 0);
+	Item::addCreativeItem(Item::items[147], 0);
+	Item::addCreativeItem(Item::items[148], 0);
+	Item::addCreativeItem(Item::items[69], 0);
+	Item::addCreativeItem(Item::items[77], 0);
+	Item::addCreativeItem(Item::items[143], 0);
+	Item::addCreativeItem(Item::items[123], 0);
+	Item::addCreativeItem(Item::items[33], 0);
+	Item::addCreativeItem(Item::items[29], 0);
 }
 
 ItemInstance (*_CreativeInventoryScreen$getItemFromType)(CreativeInventoryScreen*, CreativeTab);
