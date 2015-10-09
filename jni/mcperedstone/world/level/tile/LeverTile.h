@@ -18,5 +18,5 @@ public:
 	virtual int getSignal(TileSource*, int, int, int, int);
 	virtual int getDirectSignal(TileSource*, int, int, int, int);
 	virtual const AABB& getVisualShape(TileSource*, int, int, int, AABB&, bool);
-	virtual void addCollisionShapes(TileSource&, int, int, int, AABB const*, std::vector<AABB, std::allocator<AABB>>&);
+	virtual bool addCollisionShapes(TileSource&, int, int, int, AABB const*, std::vector<AABB, std::allocator<AABB>>&);
 };

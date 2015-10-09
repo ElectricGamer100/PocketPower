@@ -259,4 +259,4 @@ bool ButtonTile::isWood() {
 	return id == 143;
 }
 
-void ButtonTile::addCollisionShapes(TileSource& region, int x, int y, int z, AABB const* aabb, std::vector<AABB, std::allocator<AABB>>& list) {}
+bool ButtonTile::addCollisionShapes(TileSource& region, int x, int y, int z, AABB const* aabb, std::vector<AABB, std::allocator<AABB>>& list) {}

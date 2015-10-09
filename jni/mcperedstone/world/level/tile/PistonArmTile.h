@@ -11,6 +11,7 @@ public:
 	virtual void playerDestroy(Player*, int, int, int, int);
 	virtual const TextureUVCoordinateSet& getTexture(signed char, int);
 	virtual int getResourceCount(Random*, int, int);
+	virtual bool addCollisionShapes(TileSource&, int, int, int, AABB const*, std::vector<AABB, std::allocator<AABB>>&);
 	
 	static int getRotation(int);
 	static bool isSticky(int);

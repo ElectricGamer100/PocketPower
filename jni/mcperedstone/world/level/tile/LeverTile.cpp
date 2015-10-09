@@ -139,4 +139,4 @@ bool LeverTile::isSignalSource() {
 	return true;
 }
 
-void LeverTile::addCollisionShapes(TileSource& region, int x, int y, int z, AABB const* aabb, std::vector<AABB, std::allocator<AABB>>& list) {}
+bool LeverTile::addCollisionShapes(TileSource& region, int x, int y, int z, AABB const* aabb, std::vector<AABB, std::allocator<AABB>>& list) {}

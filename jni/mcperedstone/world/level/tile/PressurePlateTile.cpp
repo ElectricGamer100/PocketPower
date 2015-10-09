@@ -93,4 +93,4 @@ AABB const& PressurePlateTile::getVisualShape(TileSource* region, int x, int y, 
 	return aabb;
 }
 
-void PressurePlateTile::addCollisionShapes(TileSource& region, int x, int y, int z, AABB const* aabb, std::vector<AABB, std::allocator<AABB>>& aabbs) {}
+bool PressurePlateTile::addCollisionShapes(TileSource& region, int x, int y, int z, AABB const* aabb, std::vector<AABB, std::allocator<AABB>>& aabbs) {}

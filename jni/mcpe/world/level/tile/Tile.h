@@ -97,7 +97,7 @@ public:
 	virtual void getCarriedTexture(signed char, int);
 	virtual AABB* getAABB(TileSource*, int, int, int, AABB&, int, bool, int);
 	virtual void addAABBs(TileSource*, int, int, int, const AABB*, std::vector<AABB, std::allocator<AABB>>&);
-	virtual void addCollisionShapes(TileSource&, int, int, int, const AABB*, std::vector<AABB, std::allocator<AABB>>&);
+	virtual bool addCollisionShapes(TileSource&, int, int, int, const AABB*, std::vector<AABB, std::allocator<AABB>>&);
 	virtual int getRenderLayer(TileSource*, const TilePos&) const;
 	virtual float getThickness() const;
 	virtual bool isCropTile() const;

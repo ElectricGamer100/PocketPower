@@ -29,7 +29,7 @@ public:
 	virtual bool isSignalSource();
 	virtual int getSignal(TileSource*, int, int, int, int);
 	virtual int getDirectSignal(TileSource*, int, int, int, int);
-	virtual void addCollisionShapes(TileSource&, int, int, int, AABB const*, std::vector<AABB, std::allocator<AABB>>&);
+	virtual bool addCollisionShapes(TileSource&, int, int, int, AABB const*, std::vector<AABB, std::allocator<AABB>>&);
 
 	void recalculate(TileSource*, int, int, int);
 	void calculateChanges(TileSource*, int, int, int, int, int, int);

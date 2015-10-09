@@ -21,7 +21,7 @@ public:
 	virtual int getTickDelay();
 	virtual bool entityInside(TileSource*, int, int, int, Entity*);
 	virtual bool use(Player*, int, int, int);
-	virtual void addCollisionShapes(TileSource&, int, int, int, AABB const*, std::vector<AABB, std::allocator<AABB>>&);
+	virtual bool addCollisionShapes(TileSource&, int, int, int, AABB const*, std::vector<AABB, std::allocator<AABB>>&);
 	virtual int getSignal(TileSource*, int, int, int, int);
 	virtual int getDirectSignal(TileSource*, int, int, int, int);
 	virtual void tick(TileSource*, int, int, int, Random*);

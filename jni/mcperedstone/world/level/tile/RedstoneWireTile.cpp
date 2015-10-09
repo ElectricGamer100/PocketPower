@@ -160,7 +160,7 @@ int RedstoneWireTile::getDirectSignal(TileSource* region, int x, int y, int z, i
 	return 0;
 }
 
-void RedstoneWireTile::addCollisionShapes(TileSource& region, int x, int y, int z, AABB const* aabb, std::vector<AABB, std::allocator<AABB>>& pool) {}
+bool RedstoneWireTile::addCollisionShapes(TileSource& region, int x, int y, int z, AABB const* aabb, std::vector<AABB, std::allocator<AABB>>& pool) {}
 
 void RedstoneWireTile::calculateChanges(TileSource* region, int x, int y, int z, int xx, int yy, int zz) {
 	int oldPower = region->getData(x, y, z);

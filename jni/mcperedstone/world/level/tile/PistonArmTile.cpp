@@ -95,3 +95,41 @@ bool PistonArmTile::isSticky(int data) {
     if(sticky == 0) return false;
     return false;
 }
+
+bool PistonArmTile::addCollisionShapes(TileSource& region, int x, int y, int z, AABB const* posAABB, std::vector<AABB, std::allocator<AABB>>& pool) {
+	int data = region.getData(x, y, z);
+	float var9 = 0.25F;
+	float var10 = 0.375F;
+	float var11 = 0.625F;
+	float var12 = 0.25F;
+	float var13 = 0.75F;
+
+	switch(getRotation(data)) {
+    	case 0:
+    	    addAABB(AABB(0.0F, 0.0F, 0.0F, 1.0F, 0.25F, 1.0F).move(x, y, z), posAABB, pool);
+    	    addAABB(AABB(0.375F, 0.25F, 0.375F, 0.625F, 1.0F, 0.625F).move(x, y, z), posAABB, pool);
+    	    break;
+    	case 1:
+    	    addAABB(AABB(0.0F, 0.75F, 0.0F, 1.0F, 1.0F, 1.0F).move(x, y, z), posAABB, pool);
+    	    addAABB(AABB(0.375F, 0.0F, 0.375F, 0.625F, 0.75F, 0.625F).move(x, y, z), posAABB, pool);
+    	    break;
+    	case 2:
+    	    addAABB(AABB(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 0.25F).move(x, y, z), posAABB, pool);
+    	    addAABB(AABB(0.25F, 0.375F, 0.25F, 0.75F, 0.625F, 1.0F).move(x, y, z), posAABB, pool);
+    	    break;
+    	case 3:
+    	    addAABB(AABB(0.0F, 0.0F, 0.75F, 1.0F, 1.0F, 1.0F).move(x, y, z), posAABB, pool);
+    	    addAABB(AABB(0.25F, 0.375F, 0.0F, 0.75F, 0.625F, 0.75F).move(x, y, z), posAABB, pool);
+    	    break;
+    	case 4:
+    	    addAABB(AABB(0.0F, 0.0F, 0.0F, 0.25F, 1.0F, 1.0F).move(x, y, z), posAABB, pool);
+    	    addAABB(AABB(0.375F, 0.25F, 0.25F, 0.625F, 0.75F, 1.0F).move(x, y, z), posAABB, pool);
+    	    break;
+    	case 5:
+    	    addAABB(AABB(0.75F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F).move(x, y, z), posAABB, pool);
+    	    addAABB(AABB(0.0F, 0.375F, 0.25F, 0.75F, 0.625F, 0.75F).move(x, y, z), posAABB, pool);
+    	    break;
+    }
+	return true;
+}
+
