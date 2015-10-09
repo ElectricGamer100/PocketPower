@@ -12,11 +12,11 @@ PistonBaseTile::PistonBaseTile(int blockId, bool sticky) : Tile(blockId, &Materi
 	init();
 
 	if(!sticky) {
-		setNameId("piston");
+		setNameId("pistonBase");
 		tex = getTextureUVCoordinateSet("piston_top_normal", 0);
 	}
 	else {
-		setNameId("piston_sticky");
+		setNameId("pistonStickyBase");
 		tex = getTextureUVCoordinateSet("piston_top_sticky", 0);
 	}
 

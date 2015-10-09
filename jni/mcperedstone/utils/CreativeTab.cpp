@@ -27,4 +27,6 @@ void CreativeTabWorker::_reorderPocketpowerItems() {
 	reorder(Tile::goldenRail, CreativeTab::ITEMS);
 	reorder(Tile::redstoneBlock, CreativeTab::ITEMS);
 	reorder(Item::repeater, CreativeTab::ITEMS);
+	reorder(Item::door_wood, CreativeTab::ITEMS);
+	reorder(Item::door_iron, CreativeTab::ITEMS);
 }

@@ -11,11 +11,15 @@ void PocketPowerCraftingManager::initRecipes(Recipes* instance) {
 	
 		pushIngredient(331, 0, 'R');
 		pushIngredient(280, 0, 'S');
-	addRecipe(76, 2, {"R ", "S "});
+	addRecipe(76, 1, {"R ", "S "});
 		pushIngredient(5, 0, 'W');
-	addRecipe(72, 2, {"  ", "WW"});
+	addRecipe(72, 1, {"  ", "WW"});
 		pushIngredient(1, 0, 'S');
-	addRecipe(70, 2, {"  ", "SS"});
+	addRecipe(70, 1, {"  ", "SS"});
+		pushIngredient(265, 0, 'I');
+	addRecipe(148, 1, {"  ", "II"});
+		pushIngredient(266, 0, 'G');
+	addRecipe(147, 1, {"  ", "GG"});
 		pushIngredient(5, 0, 'W');
 	addRecipe(143, 1, {"W ", "  "});
 		pushIngredient(1, 0, 'S');

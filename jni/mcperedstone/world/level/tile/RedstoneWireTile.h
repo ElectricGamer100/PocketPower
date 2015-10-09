@@ -5,6 +5,7 @@
 
 #include "mcpe/world/level/tile/Tile.h"
 class TileSource;
+class Player;
 class AABB;
 class Random;
 
@@ -24,7 +25,7 @@ public:
 	virtual void neighborChanged(TileSource*, int, int, int, int, int, int);
 	virtual void animateTick(TileSource*, int, int, int, Random*);
 	virtual void tick(TileSource*, int, int, int, Random*);
-	virtual void onRemove(TileSource*, int, int, int);
+	virtual void playerDestroy(Player*, int, int, int, int);
 	virtual bool isSignalSource();
 	virtual int getSignal(TileSource*, int, int, int, int);
 	virtual int getDirectSignal(TileSource*, int, int, int, int);

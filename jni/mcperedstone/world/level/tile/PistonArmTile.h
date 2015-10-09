@@ -9,6 +9,7 @@ public:
 	virtual void neighborChanged(TileSource*, int, int, int, int, int, int);
 	virtual void onRemove(TileSource*, int, int, int);
 	virtual const TextureUVCoordinateSet& getTexture(signed char, int);
+	virtual int getResourceCount(Random*, int, int);
 	
 	static int getRotation(int);
 	static bool isSticky(int);

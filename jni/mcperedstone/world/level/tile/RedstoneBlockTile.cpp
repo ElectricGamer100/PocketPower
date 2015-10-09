@@ -4,7 +4,7 @@
 RedstoneBlockTile::RedstoneBlockTile(int blockId) : Tile(blockId, "redstone_block", &Material::stone) {
 	init();
 	creativeTab = CreativeTab::ITEMS;
-	setNameId("redstone_block");
+	setNameId("blockRedstone");
 }
 
 bool RedstoneBlockTile::isSignalSource() {

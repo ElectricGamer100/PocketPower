@@ -104,7 +104,7 @@ int NotGateTile::getSignal(TileSource* region, int x, int y, int z, int side) {
 
 void NotGateTile::neighborChanged(TileSource* region, int x, int y, int z, int newX, int newY, int newZ) {
 	if(!canSurvive(region, x, y, z)) {
-		//popResource(region, x, y, z, ItemInstance(76, 1, 0));
+		popResource(region, x, y, z, ItemInstance(76, 1, 0));
 		region->removeTile(x, y, z);
 	}
 	region->scheduleBlockUpdate(x, y, z, id, getTickDelay());

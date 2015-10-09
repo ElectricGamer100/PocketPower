@@ -31,14 +31,26 @@ void RepeaterTile::tick(TileSource* region, int x, int y, int z, Random* random)
     int data = region->getData(x, y, z);
     bool shouldBePowered = isGettingPowered(region, x, y, z, data);
     if(powered && !shouldBePowered)
-	region->setTileAndData(x, y, z, {93, data}, 3);
+		region->setTileAndData(x, y, z, {93, data}, 3);
     else if(!powered) {
-	region->setTileAndData(x, y, z, {94, data}, 3);
-	if(!shouldBePowered) {
-	    int delay = (data & 12) >> 2;
-	    region->scheduleBlockUpdate(x, y, z, 94, delaySettings[delay] * 2);
-	}
+		region->setTileAndData(x, y, z, {94, data}, 3);
+		if(!shouldBePowered) {
+		    int delay = (data & 12) >> 2;
+		    region->scheduleBlockUpdate(x, y, z, 94, delaySettings[delay] * 2);
+		}
     }
+}
+
+int RepeaterTile::getResource(Random*, int, int) {
+	return 356;
+}
+
+bool RepeaterTile::canSurvive(TileSource* region, int x, int y, int z) {
+	return Tile::solid[region->getTile(x, y - 1, z).id] || region->isRedstonePlacementException(x, y - 1, z);
+}
+
+bool RepeaterTile::mayPlace(TileSource* region, int x, int y, int z) {
+	return region->getTile(x, y, z).id == 0 && (Tile::solid[region->getTile(x, y - 1, z).id] || region->isRedstonePlacementException(x, y - 1, z));
 }
 
 int RepeaterTile::getSignal(TileSource* region, int x, int y, int z, int side) {
@@ -47,26 +59,30 @@ int RepeaterTile::getSignal(TileSource* region, int x, int y, int z, int side) {
 
 int RepeaterTile::getDirectSignal(TileSource* region, int x, int y, int z, int side) {
     if(!powered)
-	return 0;
+		return 0;
 
     int rot = region->getData(x, y, z) & 3;
     if(rot == 0 && side == 3)
-	return 15;
+		return 15;
     if(rot == 1 && side == 4)
-	return 15;
+		return 15;
     if(rot == 2 && side == 2)
-	return 15;
+		return 15;
     return (rot == 3 && side == 5)? 15 : 0;
 }
 
 void RepeaterTile::neighborChanged(TileSource* region, int x, int y, int z, int changedX, int changedY, int changedZ) {
+	if(!canSurvive(x, y, z)) {
+		popResource(region, x, y, z, ItemInstance(getResource(NULL, 0, 0), 1, 0));
+		region->removeTile(x, y, z);
+	}
     int data = region->getData(x, y, z);
     bool shouldBePowered = isGettingPowered(region, x, y, z, data);
     int delay = (data & 12) >> 2;
     if(powered && !shouldBePowered)
-	region->scheduleBlockUpdate(x, y, z, id, delaySettings[delay] * 2);
+		region->scheduleBlockUpdate(x, y, z, id, delaySettings[delay] * 2);
     else if(!powered && shouldBePowered)
-	region->scheduleBlockUpdate(x, y, z, id, delaySettings[delay] * 2);
+		region->scheduleBlockUpdate(x, y, z, id, delaySettings[delay] * 2);
 }
 
 bool RepeaterTile::isGettingPowered(TileSource* region, int x, int y, int z, int data) {
@@ -74,21 +90,21 @@ bool RepeaterTile::isGettingPowered(TileSource* region, int x, int y, int z, int
 
     switch(rot) {
     case 0:
-	if(region->getTile(x, y, z + 1).id == 55 && region->getData(x, y, z + 1) > 0)
-	    return true;
-	return region->getIndirectPowerLevelTo(x, y, z + 1, 3) > 0;
+		if(region->getTile(x, y, z + 1).id == 55 && region->getData(x, y, z + 1) > 0)
+	    	return true;
+		return region->getIndirectPowerLevelTo(x, y, z + 1, 3) > 0;
     case 2:
-	if(region->getTile(x, y, z - 1).id == 55 && region->getData(x, y, z - 1) > 0)
-	    return true;
-	return region->getIndirectPowerLevelTo(x, y, z - 1, 2) > 0;
+		if(region->getTile(x, y, z - 1).id == 55 && region->getData(x, y, z - 1) > 0)
+	    	return true;
+		return region->getIndirectPowerLevelTo(x, y, z - 1, 2) > 0;
     case 3:
-	if(region->getTile(x + 1, y, z).id == 55 && region->getData(x + 1, y, z) > 0)
-	    return true;
-	return region->getIndirectPowerLevelTo(x + 1, y, z, 5) > 0;
+		if(region->getTile(x + 1, y, z).id == 55 && region->getData(x + 1, y, z) > 0)
+		    return true;
+		return region->getIndirectPowerLevelTo(x + 1, y, z, 5) > 0;
     case 1:
-	if(region->getTile(x - 1, y, z).id == 55 && region->getData(x - 1, y, z) > 0)
-	    return true;
-	return region->getIndirectPowerLevelTo(x - 1, y, z, 4) > 0;
+		if(region->getTile(x - 1, y, z).id == 55 && region->getData(x - 1, y, z) > 0)
+		    return true;
+		return region->getIndirectPowerLevelTo(x - 1, y, z, 4) > 0;
     }
     return false;
 }
@@ -111,7 +127,7 @@ int RepeaterTile::getPlacementDataValue(Mob* placer, int x, int y, int z, signed
 
 void RepeaterTile::onPlace(TileSource* region, int x, int y, int z) {
     if(isGettingPowered(region, x, y, z, region->getData(x, y, z)))
-	region->scheduleBlockUpdate(x, y, z, id, 1);
+		region->scheduleBlockUpdate(x, y, z, id, 1);
 
     region->updateNeighborsAt({x + 1, y, z}, id);
     region->updateNeighborsAt({x - 1, y, z}, id);

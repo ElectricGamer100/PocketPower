@@ -108,15 +108,15 @@ void Tile$initTiles() {
 	Tile::redStoneDust = new RedstoneWireTile(55, "redstone_dust_cross", &Material::circuits);
 	Tile::notGate_off = new NotGateTile(75, "redstone_torch_off");
 	Tile::notGate_on = new NotGateTile(76, "redstone_torch_on");
-	Tile::pressurePlate_stone = new LightPressurePlateTile(70, "stonePlate", "stone", &Material::stone, LightPressurePlateTile::SENSITIVITY::MOBS);
-	Tile::pressurePlate_wood = new LightPressurePlateTile(72, "woodPlate", "planks", &Material::wood, LightPressurePlateTile::SENSITIVITY::EVERYTHING);
+	Tile::pressurePlate_stone = new LightPressurePlateTile(70, "pressurePlateStone", "stone", &Material::stone, LightPressurePlateTile::SENSITIVITY::MOBS);
+	Tile::pressurePlate_wood = new LightPressurePlateTile(72, "pressurePlateWood", "planks", &Material::wood, LightPressurePlateTile::SENSITIVITY::EVERYTHING);
 	Tile::lever = new LeverTile(69, "lever", &Material::circuits);
 	Tile::offlamp = new LampTile(123, "redstone_lamp_off", &Material::stone);
 	Tile::onlamp = new LampTile(124, "redstone_lamp_on", &Material::stone);
 	Tile::button = new ButtonTile(77, "stone", &Material::circuits);
 	Tile::buttonWood = new ButtonTile(143, "planks", &Material::circuits);
-	Tile::pressurePlate_gold = new HeavyPressurePlateTile(147, "goldPlate", "gold_block", &Material::metal, 15);
-	Tile::pressurePlate_iron = new HeavyPressurePlateTile(148, "ironPlate", "iron_block", &Material::metal, 150);
+	Tile::pressurePlate_gold = new HeavyPressurePlateTile(147, "weightedPlate_light", "gold_block", &Material::metal, 15);
+	Tile::pressurePlate_iron = new HeavyPressurePlateTile(148, "weightedPlate_heavy", "iron_block", &Material::metal, 150);
 	Tile::diode_off = new RepeaterTile(93, "repeater_off", false);
 	Tile::diode_on = new RepeaterTile(94, "repeater_on", true);
 	Tile::pistonNormal = new PistonBaseTile(33, false);
@@ -139,6 +139,7 @@ void (*_Item$initCreativeItems)();
 void Item$initCreativeItems() {
 	CreativeTabWorker::reorderCreativeItems();
 	_Item$initCreativeItems();
+	Item::addCreativeItem(Item::door_iron, 0);
 	Item::addCreativeItem(Item::repeater, 0);
 	Item::addCreativeItem(Tile::notGate_on, 0);
 	Item::addCreativeItem(Tile::pressurePlate_stone, 0);

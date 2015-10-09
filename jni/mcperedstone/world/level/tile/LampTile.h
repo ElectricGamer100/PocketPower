@@ -9,7 +9,7 @@ public:
 	virtual void onPlace(TileSource*, int, int, int);
 	virtual void neighborChanged(TileSource*, int, int, int, int, int, int);
 	virtual void tick(TileSource*, int, int, int, Random*);
-	virtual int getResource(int, Random*);
+	virtual int getResource(Random*, int, int);
 
 	bool isLit();
 };

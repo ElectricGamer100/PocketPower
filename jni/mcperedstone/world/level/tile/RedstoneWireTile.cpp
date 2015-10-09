@@ -1,5 +1,5 @@
 #include "RedstoneWireTile.h"
-
+#include "mcpe/world/entity/player/Player.h"
 #include "mcpe/world/level/TileSource.h"
 #include "mcpe/world/Facing.h"
 
@@ -57,63 +57,61 @@ void RedstoneWireTile::onPlace(TileSource* region, int x, int y, int z) {
 		updateWires(region, x, y - 1, z + 1);
 }
 
-void RedstoneWireTile::onRemove(TileSource* region, int x, int y, int z) {
-	Tile::onRemove(region, x, y, z);
-	region->updateNeighborsAt({x, y + 1, z}, id);
-	region->updateNeighborsAt({x, y - 1, z}, id);
-	region->updateNeighborsAt({x + 1, y, z}, id);
-	region->updateNeighborsAt({x - 1, y, z}, id);
-	region->updateNeighborsAt({x, y, z + 1}, id);
-	region->updateNeighborsAt({x, y, z - 1}, id);
-	recalculate(region, x, y, z);
-	updateWires(region, x - 1, y, z);
-	updateWires(region, x + 1, y, z);
-	updateWires(region, x, y, z - 1);
-	updateWires(region, x, y, z + 1);
+void RedstoneWireTile::playerDestroy(Player* player, int x, int y, int z, int side) {
+	Tile::onRemove(&player->region, x, y, z);
+	player->region.updateNeighborsAt({x, y + 1, z}, id);
+	player->region.updateNeighborsAt({x, y - 1, z}, id);
+	player->region.updateNeighborsAt({x + 1, y, z}, id);
+	player->region.updateNeighborsAt({x - 1, y, z}, id);
+	player->region.updateNeighborsAt({x, y, z + 1}, id);
+	player->region.updateNeighborsAt({x, y, z - 1}, id);
+	recalculate(&player->region, x, y, z);
+	updateWires(&player->region, x - 1, y, z);
+	updateWires(&player->region, x + 1, y, z);
+	updateWires(&player->region, x, y, z - 1);
+	updateWires(&player->region, x, y, z + 1);
 
-	if(Tile::solid[region->getTile(x - 1, y, z).id])
-		updateWires(region, x - 1, y + 1, z);
+	if(Tile::solid[player->region.getTile(x - 1, y, z).id])
+		updateWires(&player->region, x - 1, y + 1, z);
 	else
-		updateWires(region, x - 1, y - 1, z);
+		updateWires(&player->region, x - 1, y - 1, z);
 
-	if(Tile::solid[region->getTile(x + 1, y, z).id])
-		updateWires(region, x + 1, y + 1, z);
+	if(Tile::solid[player->region.getTile(x + 1, y, z).id])
+		updateWires(&player->region, x + 1, y + 1, z);
 	else
-		updateWires(region, x + 1, y - 1, z);
+		updateWires(&player->region, x + 1, y - 1, z);
 
-	if(Tile::solid[region->getTile(x, y, z - 1).id])
-		updateWires(region, x, y + 1, z - 1);
+	if(Tile::solid[player->region.getTile(x, y, z - 1).id])
+		updateWires(&player->region, x, y + 1, z - 1);
 	else
-		updateWires(region, x, y - 1, z - 1);
+		updateWires(&player->region, x, y - 1, z - 1);
 
-	if(Tile::solid[region->getTile(x, y, z + 1).id])
-		updateWires(region, x, y + 1, z + 1);
+	if(Tile::solid[player->region.getTile(x, y, z + 1).id])
+		updateWires(&player->region, x, y + 1, z + 1);
 	else
-		updateWires(region, x, y - 1, z + 1);
+		updateWires(&player->region, x, y - 1, z + 1);
 }
 
 bool RedstoneWireTile::canSurvive(TileSource* region, int x, int y, int z) {
-	return Tile::solid[region->getTile(x, y - 1, z).id];
+	return Tile::solid[region->getTile(x, y - 1, z).id] || region->isRedstonePlacementException(x, y - 1, z);
 }
 
 bool RedstoneWireTile::mayPlace(TileSource* region, int x, int y, int z) {
-	if(region->getTile(x, y, z).id != 0) return false;
-	if(region->isRedstonePlacementException(x, y - 1, z))
-		return true;
-	return Tile::solid[region->getTile(x, y - 1, z).id];
+	return region->getTile(x, y, z).id == 0 && (Tile::solid[region->getTile(x, y - 1, z).id] || region->isRedstonePlacementException(x, y - 1, z));
 }
 
 void RedstoneWireTile::neighborChanged(TileSource* region, int x, int y, int z, int newX, int newY, int newZ) {
 	if(!canSurvive(region, x, y, z)) {
-		//popResource(region, x, y, z, ItemInstance(331, 1, 0));
-		//region->removeTile(x, y, z);
+		popResource(region, x, y, z, ItemInstance(331, 1, 0));
+		region->removeTile(x, y, z);
 	}
 	recalculate(region, x, y, z);
 	Tile::neighborChanged(region, x, y, z, newX, newY, newZ);
 }
 
 void RedstoneWireTile::animateTick(TileSource* region, int x, int y, int z, Random* random) {
-
+	if(region->getData(x, y, z) == 0)
+		return;
 }
 
 void RedstoneWireTile::tick(TileSource* region, int x, int y, int z, Random* random) {}

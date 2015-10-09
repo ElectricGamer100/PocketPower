@@ -34,6 +34,6 @@ bool LampTile::isLit() {
 	return id == 124;
 }
 
-int LampTile::getResource(int id, Random* random) {
+int LampTile::getResource(Random* random, int data, int i) {
 	return Tile::offlamp->id;
 }

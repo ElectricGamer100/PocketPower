@@ -20,20 +20,24 @@ PistonArmTile::PistonArmTile(int blockId) : Tile(blockId, &Material::stone) {
 	texture_side = getTextureUVCoordinateSet("piston_side", 0);
 }
 
-void PistonArmTile::onRemove(TileSource* region, int x, int y, int z) {
+void PistonArmTile::playerDestroy(Player* player, int x, int y, int z, int side) {
 	// Remove the attached piston base
-	int data = region->getData(x, y, z);
+	int data = player->region.getData(x, y, z);
 	int rotation = Facing::OPPOSITE_FACING[getRotation(data)];
 	x += Facing::STEP_X[rotation];
 	y += Facing::STEP_Y[rotation];
 	z += Facing::STEP_Z[rotation];
-	/*int tile = region->getTile(x, y, z).id;
+	int tile = region->getTile(x, y, z).id;
 	if(tile == Tile::pistonNormal->id || tile == Tile::pistonSticky->id) {
 		data = region->getData(x, y, z);
 		if(PistonBaseTile::isPowered(data)) {
 			region->setTileAndData(x, y, z, {0, 0}, 0);
 		}
-	}*/
+	}
+}
+
+int PistonArmTile::getResourceCount(Random*, int, int) {
+	return 0;
 }
 
 const AABB& PistonArmTile::getVisualShape(TileSource* region, int x, int y, int z, AABB& shape, bool b) {
