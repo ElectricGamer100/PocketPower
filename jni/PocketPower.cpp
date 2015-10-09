@@ -34,6 +34,7 @@
 #include "mcperedstone/world/level/tile/PistonArmTile.h"
 #include "mcperedstone/world/level/tile/RedstoneBlockTile.h"
 #include "mcperedstone/world/level/tile/DoorTile.h"
+#include "mcperedstone/world/level/tile/TrapDoorTile.h"
 #include "mcperedstone/utils/CreativeTab.h"
 #include "mcperedstone/utils/PocketPowerCraftingManager.h"
 
@@ -184,7 +185,7 @@ JNIEXPORT jint JNI_OnLoad(JavaVM* vm, void* reserved) {
 	MSHookFunction((void*) &TileEntityFactory::createTileEntity, (void*) &TileEntityFactory$createTileEntity, (void**) &_TileEntityFactory$createTileEntity);
 
 	DoorTile::_$neighborChanged = (void (*)(DoorTile*, TileSource*, int, int, int, int, int, int)) VirtualHook("_ZTV8DoorTile", "_ZN8DoorTile15neighborChangedEP10TileSourceiiiiii", (void*) &DoorTile::$neighborChanged);
-	TrapdoorTile::_$neighborChanged = (void (*)(TrapdoorTile*, TileSource*, int, int, int, int, int, int)) VirtualHook("_ZTV12TrapdoorTile", "_ZN12TrapdoorTile15neighborChangedEP10TileSourceiiiiii", (void*) &TrapdoorTile::$neighborChanged);
+	TrapDoorTile::_$neighborChanged = (void (*)(TrapDoorTile*, TileSource*, int, int, int, int, int, int)) VirtualHook("_ZTV12TrapDoorTile", "_ZN12TrapDoorTile15neighborChangedEP10TileSourceiiiiii", (void*) &TrapDoorTile::$neighborChanged);
 	VirtualHook("_ZTV7TntTile", "_ZN7TntTile15neighborChangedEP10TileSourceiiiiii", (void*) &TntTile::_neighborChanged);
 	VirtualHook("_ZTV7TntTile", "_ZN4Tile7onPlaceEP10TileSourceiii", (void*) &TntTile::onPlace);
 	
