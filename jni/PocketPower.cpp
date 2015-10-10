@@ -8,6 +8,7 @@
 
 #include "mcpe/client/renderer/tile/TileTessellator.h"
 #include "mcpe/client/gui/screens/CreativeInventoryScreen.h"
+#include "mcpe/client/gui/screens/StartMenuScreen.h"
 #include "mcpe/world/level/TilePos.h"
 #include "mcpe/client/Recipes.h"
 #include "mcpe/world/level/TileSource.h"
@@ -160,6 +161,17 @@ ItemInstance CreativeInventoryScreen$getItemFromType(CreativeInventoryScreen* se
 	return _CreativeInventoryScreen$getItemFromType(self, type);
 }
 
+void (*_Touch$StartMenuScreen$chooseRandomSplash)(Touch::StartMenuScreen*);
+void Touch$StartMenuScreen$chooseRandomSplash(Touch::StartMenuScreen* screen) {
+	std::vector<std::string> newSplashes = {
+	"Now 120% more redstone!",
+	"Redstoney!",
+	};
+	Touch::StartMenuScreen::mSplashes = newSplashes;
+	
+	_Touch$StartMenuScreen$chooseRandomSplash(screen);
+}
+
 bool (*_Item$useOn)(Item*, ItemInstance*, Player*, int, int, int, signed char, float, float, float);
 bool Item$useOn(Item* self, ItemInstance* item, Player* player, int x, int y, int z, signed char side, float xx, float yy, float zz) {
 	if(item->item == Item::redStone) {
@@ -174,16 +186,18 @@ bool Item$useOn(Item* self, ItemInstance* item, Player* player, int x, int y, in
 
 
 JNIEXPORT jint JNI_OnLoad(JavaVM* vm, void* reserved) {
-
+	
 	MSHookFunction((void*) &Tile::initTiles, (void*) &Tile$initTiles, (void**) &_Tile$initTiles);
 	MSHookFunction((void*) &Item::initItems, (void*) &Item$initItems, (void**) &_Item$initItems);
 	MSHookFunction((void*) &TileTessellator::tessellateInWorld, (void*) &TileTessellator$tessellateInWorld, (void**) &_TileTessellator$tessellateInWorld);
 	MSHookFunction((void*) &Item::initCreativeItems, (void*) &Item$initCreativeItems, (void**) &_Item$initCreativeItems);
 	MSHookFunction((void*) &Item::useOn, (void*) &Item$useOn, (void**) &_Item$useOn);
 	MSHookFunction((void*) &CreativeInventoryScreen::getItemFromType, (void*) &CreativeInventoryScreen$getItemFromType, (void**) &_CreativeInventoryScreen$getItemFromType);
+	MSHookFunction((void*) &Touch::StartMenuScreen::chooseRandomSplash, (void*) &Touch$StartMenuScreen$chooseRandomSplash, (void**) &_Touch$StartMenuScreen$chooseRandomSplash);
 	MSHookFunction((void*) &Recipes::init, (void*) &Recipes$init, (void**) &_Recipes$init);
 	MSHookFunction((void*) &TileEntity::initTileEntities, (void*) &TileEntity$initTileEntities, (void**) &_TileEntity$initTileEntities);
 	MSHookFunction((void*) &TileEntityFactory::createTileEntity, (void*) &TileEntityFactory$createTileEntity, (void**) &_TileEntityFactory$createTileEntity);
+	
 
 	DoorTile::_$neighborChanged = (void (*)(DoorTile*, TileSource*, int, int, int, int, int, int)) VirtualHook("_ZTV8DoorTile", "_ZN8DoorTile15neighborChangedEP10TileSourceiiiiii", (void*) &DoorTile::$neighborChanged);
 	TrapDoorTile::_$neighborChanged = (void (*)(TrapDoorTile*, TileSource*, int, int, int, int, int, int)) VirtualHook("_ZTV12TrapDoorTile", "_ZN12TrapDoorTile15neighborChangedEP10TileSourceiiiiii", (void*) &TrapDoorTile::$neighborChanged);
