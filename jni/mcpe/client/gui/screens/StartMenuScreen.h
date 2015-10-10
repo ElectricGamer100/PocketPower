@@ -10,6 +10,6 @@ namespace Touch {
 		
 		StartMenuScreen(void);
 		virtual ~StartMenuScreen();
-        void chooseRandomSplash();
+		void chooseRandomSplash();
 	};
 }
