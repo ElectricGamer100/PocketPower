@@ -164,8 +164,13 @@ ItemInstance CreativeInventoryScreen$getItemFromType(CreativeInventoryScreen* se
 void (*_Touch$StartMenuScreen$chooseRandomSplash)(Touch::StartMenuScreen*);
 void Touch$StartMenuScreen$chooseRandomSplash(Touch::StartMenuScreen* screen) {
 	std::vector<std::string> newSplashes = {
-	"Now 120% more redstone!",
-	"Redstoney!",
+		"Now 120% more redstone!",
+		"Redstoney!",
+		"such redstone much wow",
+		"many repeater so tnt",
+		"Contains redstone!",
+		"Only contains 500% redstone!",
+		"Contains bluestone!"
 	};
 	Touch::StartMenuScreen::mSplashes = newSplashes;
 	
