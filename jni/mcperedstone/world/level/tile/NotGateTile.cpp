@@ -30,19 +30,19 @@ void NotGateTile::animateTick(TileSource* region, int x, int y, int z, Random* r
     switch(region->getData(posX, posY, posZ)) {
     case 0:
     case 5:
-        region->getLevel()->addParticle(ParticleType::RedDust, {posX, posY, posZ}, {1.0, 1.0, 1.0}, 1);
+        region->getLevel()->addParticle(ParticleType::RedDust, {posX, posY, posZ}, {0.0F, 0.0F, 0.0F}, 1);
         break;
     case 1:
-        region->getLevel()->addParticle(ParticleType::RedDust, {posX - horizontalOffset, posY + verticalOffset, posZ}, {1.0, 1.0, 1.0}, 1);
+        region->getLevel()->addParticle(ParticleType::RedDust, {posX - horizontalOffset, posY + verticalOffset, posZ}, {0.0F, 0.0F, 0.0F}, 1);
         break;
     case 2:
-        region->getLevel()->addParticle(ParticleType::RedDust, {posX + horizontalOffset, posY + verticalOffset, posZ}, {1.0, 1.0, 1.0}, 1);
+        region->getLevel()->addParticle(ParticleType::RedDust, {posX + horizontalOffset, posY + verticalOffset, posZ}, {0.0F, 0.0F, 0.0F}, 1);
         break;
     case 3:
-        region->getLevel()->addParticle(ParticleType::RedDust, {posX, posY + verticalOffset, posZ - horizontalOffset}, {1.0, 1.0, 1.0}, 1);
+        region->getLevel()->addParticle(ParticleType::RedDust, {posX, posY + verticalOffset, posZ - horizontalOffset}, {0.0F, 0.0F, 0.0F}, 1);
         break;
     case 4:
-        region->getLevel()->addParticle(ParticleType::RedDust, {posX, posY + verticalOffset, posZ + horizontalOffset}, {1.0, 1.0, 1.0}, 1);
+        region->getLevel()->addParticle(ParticleType::RedDust, {posX, posY + verticalOffset, posZ + horizontalOffset}, {0.0F, 0.0F, 0.0F}, 1);
         break;
     }
 }

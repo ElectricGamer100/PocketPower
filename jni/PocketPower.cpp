@@ -36,6 +36,7 @@
 #include "mcperedstone/world/level/tile/RedstoneBlockTile.h"
 #include "mcperedstone/world/level/tile/DoorTile.h"
 #include "mcperedstone/world/level/tile/TrapDoorTile.h"
+#include "mcperedstone/world/level/tile/FenceGateTile.h"
 #include "mcperedstone/utils/CreativeTab.h"
 #include "mcperedstone/utils/PocketPowerCraftingManager.h"
 
@@ -199,6 +200,7 @@ JNIEXPORT jint JNI_OnLoad(JavaVM* vm, void* reserved) {
 	TrapDoorTile::_$neighborChanged = (void (*)(TrapDoorTile*, TileSource*, int, int, int, int, int, int)) VirtualHook("_ZTV12TrapDoorTile", "_ZN12TrapDoorTile15neighborChangedEP10TileSourceiiiiii", (void*) &TrapDoorTile::$neighborChanged);
 	VirtualHook("_ZTV7TntTile", "_ZN7TntTile15neighborChangedEP10TileSourceiiiiii", (void*) &TntTile::_neighborChanged);
 	VirtualHook("_ZTV7TntTile", "_ZN4Tile7onPlaceEP10TileSourceiii", (void*) &TntTile::onPlace);
+	VirtualHook("_ZTV13FenceGateTile", "_ZN13FenceGateTile15neighborChangedEP10TileSourceiiiiii", (void*) &FenceGateTile::_neighborChanged);
 	
 	return JNI_VERSION_1_2;
 }
