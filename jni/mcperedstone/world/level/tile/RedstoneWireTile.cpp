@@ -258,17 +258,9 @@ void RedstoneWireTile::updateWires(TileSource* region, int x, int y, int z) {
 
 bool RedstoneWireTile::canRedstoneConnectTo(TileSource* region, int x, int y, int z, int side) const {
 	int id = region->getTile(x, y, z).id;
-	if(id == Tile::redStoneDust->id)
+	if(id == this->id)
 		return true;
 	else if(id == 0)
 		return false;
-	else if(id != 93 && id != 94)
-		return Tile::tiles[id]->isSignalSource() && side != -1;
-	else {
-		int data = region->getData(x, y, z);
-		if(id == 94)
-			if(side == (data & 3))
-				return true;
-		return side == (data & 3) || side == Facing::OPPOSITE_FACING[data & 3];
-	}
+	return Tile::tiles[id]->isSignalSource() && side != -1;
 }
