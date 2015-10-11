@@ -2,6 +2,8 @@
 #include "mcpe/world/material/Material.h"
 #include "mcpe/world/level/TileSource.h"
 #include "mcpe/world/Facing.h"
+#include "mcpe/world/item/Item.h"
+#include "mcpe/world/item/ItemInstance.h"
 #include "mcpe/world/phys/AABB.h"
 #include "mcpe/world/entity/Mob.h"
 #include <cmath>
@@ -175,11 +177,13 @@ bool PistonBaseTile::canPushRow(TileSource* region, int x, int y, int z, int rot
 	int counter = 0;
 	do {
 		if(yy <= 0 || yy >= 127) break; // Can't push blocks out of the world
-		int blockId = region->getTile(xx, yy, zz).id;
-		if(blockId == 0 || Tile::tiles[blockId] == NULL)
+		PistonPushInfo pushInfo = getPushInfoFor(region, xx, yy, zz);
+		if(pushInfo == PistonPushInfo::NO_PUSH)
+			return false;
+		if(pushInfo == PistonPushInfo::REPLACE)
 			break;
-		if(Tile::tiles[blockId]->replaceable) break; // Break things like flowers, etc.
-		if(!isMoveableBlock(Tile::tiles[blockId], region, xx, yy, zz, true)) return false; // Can't extend the piston :(
+		if(pushInfo == PistonPushInfo::REPLACE_DROP)
+			break;
 			
 		xx += Facing::STEP_X[rotation];
 		yy += Facing::STEP_Y[rotation];
@@ -188,15 +192,6 @@ bool PistonBaseTile::canPushRow(TileSource* region, int x, int y, int z, int rot
 	} while(counter < 13); // You may only push 12 blocks
 
 	return true;
-}
-
-bool PistonBaseTile::isMoveableBlock(Tile* tile, TileSource* region, int x, int y, int z, bool b) {
-	if(tile == Tile::obsidian || tile == Tile::unbreakable || tile == Tile::pistonArm)
-		return false;
-	if(tile == Tile::pistonNormal || tile == Tile::pistonSticky)
-		return !isPowered(region->getData(x, y, z));
-		
-	return region->getTileEntity({x, y, z}) == NULL;
 }
 
 void PistonBaseTile::triggerEvent(TileSource* region, int x, int y, int z, int eventType, int rotation) {
@@ -216,10 +211,13 @@ void PistonBaseTile::triggerEvent(TileSource* region, int x, int y, int z, int e
 			int pullData = region->getData(pullX, pullY, pullZ);
 
 			if(Tile::tiles[pullID] != NULL) {
-				if(pullID > 0 && isMoveableBlock(Tile::tiles[pullID], region, pullX, pullY, pullZ, false) && !Tile::tiles[pullID]->replaceable) {
+				PistonPushInfo pushInfo = getPushInfoFor(region, pullX, pullY, pullZ);
+				if(pushInfo == PistonPushInfo::MAY_PUSH) {
 					region->setTileAndData(pullX - Facing::STEP_X[rotation], pullY - Facing::STEP_Y[rotation], pullZ - Facing::STEP_Z[rotation], {pullID, pullData}, 3);
 					region->setTileAndData(pullX, pullY, pullZ, {0, 0}, 3);
 				}
+				else
+					region->setTileAndData(pullX - Facing::STEP_X[rotation], pullY - Facing::STEP_Y[rotation], pullZ - Facing::STEP_Z[rotation], {0, 0}, 3);
 			}
 			else
 				region->setTileAndData(pullX - Facing::STEP_X[rotation], pullY - Facing::STEP_Y[rotation], pullZ - Facing::STEP_Z[rotation], {0, 0}, 3);
@@ -248,15 +246,20 @@ bool PistonBaseTile::actuallyPushRow(TileSource* region, int x, int y, int z, in
 	do {
 		if(yy <= 0 || yy >= 127)
 			break;
-		int blockId = region->getTile(xx, yy, zz).id;
-		if(blockId == 0 || Tile::tiles[blockId] == NULL)
-			break;
-		if(!isMoveableBlock(Tile::tiles[blockId], region, xx, yy, zz, true))
+		PistonPushInfo pushInfo = getPushInfoFor(region, xx, yy, zz);
+		if(pushInfo == PistonPushInfo::NO_PUSH)
 			return false;
-		if(Tile::tiles[blockId]->replaceable)
+		if(pushInfo == PistonPushInfo::REPLACE)
 			break;
-			
-		// TODO: Drop flowers and such
+		if(pushInfo == PistonPushInfo::REPLACE_DROP) {
+			Tile* toDrop = region->getTilePtr(xx, yy, zz);
+			if(toDrop) {
+				Item* resource = Item::items[toDrop->getResource(NULL, 0, 0)];
+				toDrop->popResource(region, xx, yy, zz, ItemInstance(resource, 1, 0));
+			}
+			break;
+		}
+		
 		if(counter == 12)
 			return false;
 			
@@ -277,6 +280,17 @@ bool PistonBaseTile::actuallyPushRow(TileSource* region, int x, int y, int z, in
 		zz = l2;
 		int pushID = region->getTile(xx, yy, zz).id;
 		int pushData = region->getData(xx, yy, zz);
+		
+		PistonPushInfo pushInfo = getPushInfoFor(region, xx, yy + 1, zz);
+		if(pushInfo == PistonPushInfo::REPLACE_DROP) {
+			Tile* toDrop = region->getTilePtr(xx, yy + 1, zz);
+			if(toDrop) {
+				Item* resource = Item::items[toDrop->getResource(NULL, 0, 0)];
+				region->setTileAndData(xx, yy + 1, zz, {0, 0}, 2);
+				toDrop->popResource(region, xx, yy + 1, zz, ItemInstance(resource, 1, 0));
+			}
+		}
+		
 		if(pushID == id && i2 == x && k2 == y && l2 == z) {
 			region->setTileAndData(xx + Facing::STEP_X[rotation], yy + Facing::STEP_Y[rotation], zz + Facing::STEP_Z[rotation], {34, rotation | (sticky? 8 : 0)}, 3);
 		} else {
@@ -285,4 +299,46 @@ bool PistonBaseTile::actuallyPushRow(TileSource* region, int x, int y, int z, in
 	}
 	//ts->setTileAndData(xx + Facing::xSide[rot], yy + Facing::ySide[rot], zz + Facing::zSide[rot], 34, rot, 0);
 	return true;
+}
+
+PistonPushInfo PistonBaseTile::getPushInfoFor(TileSource* region, int x, int y, int z) {
+	Tile* tile = region->getTilePtr(x, y, z);
+	if(tile == Tile::obsidian || tile == Tile::unbreakable || tile == Tile::pistonArm || tile == Tile::portal)
+		return PistonPushInfo::NO_PUSH;
+	if(tile == Tile::pistonNormal || tile == Tile::pistonSticky)
+		if(isPowered(region->getData(x, y, z)))
+			return PistonPushInfo::NO_PUSH;
+	if(region->getTileEntity({x, y, z}))
+		return PistonPushInfo::NO_PUSH;
+	
+	if(tile == NULL || tile == Tile::water || tile == Tile::calmWater || tile == lava || tile == Tile::calmLava || tile == Tile::fire || tile->renderType == 19 || tile->renderType == 20)
+		return PistonPushInfo::REPLACE;
+	
+	if(tile) {
+		bool shouldDrop = false;
+		
+		switch(tile->renderType) {
+		case 1:
+			if(tile != Tile::web)
+				shouldDrop = true;
+			break;
+		case 2:
+		case 5:
+		case 7:
+		case 8:
+		case 12:
+		case 14:
+		case 15:
+		case 23:
+		case 28:
+		case 40:
+		case 65:
+		case 66:
+			shouldDrop = true;
+		}
+		if(shouldDrop)
+			return PistonPushInfo::REPLACE_DROP;
+	}
+	
+	return PistonPushInfo::MAY_PUSH;
 }
