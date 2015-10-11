@@ -16,5 +16,5 @@ void FenceGateTile::_neighborChanged(FenceGateTile* self, TileSource* region, in
 		region->getLevel()->playSound(x + 0.5F, y + 0.5F, z + 0.5F, "random.door_close", 0.3F, 1.0F);
 	}
 
-	self->_checkIsInWall(region, {xx, yy, zz});
+	//self->_checkIsInWall(region, {xx, yy, zz});
 }
