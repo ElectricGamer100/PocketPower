@@ -1,9 +1,11 @@
 #include "RepeaterTile.h"
 #include "mcpe/world/material/Material.h"
 #include "mcpe/world/level/TileSource.h"
+#include "mcpe/world/level/Level.h"
 #include "mcpe/world/Facing.h"
 #include "mcpe/world/item/Item.h"
 #include "mcpe/world/entity/player/Player.h"
+#include "mcpe/util/Mth.h"
 #include <cmath>
 
 float RepeaterTile::torchOffset[4] = {-0.0625F, 0.0625F, 0.1875F, 0.3125F};
@@ -139,5 +141,30 @@ void RepeaterTile::onPlace(TileSource* region, int x, int y, int z) {
 }
 
 void RepeaterTile::animateTick(TileSource* region, int x, int y, int z, Random*) {
-	
+	if(powered) {
+		int data = region->getData(x, y, z);
+		int rot = data & 3;
+		float posX = (x + 0.5F) + (Mth::random() - 0.5F) * 0.2F;
+		float posY = (y + 0.4F) + (Mth::random() - 0.5F) * 0.2F;
+		float posZ = (z + 0.5F) + (Mth::random() - 0.5F) * 0.2F;
+		float offsetX = 0.0F;
+		float offsetZ = 0.0F;
+		int setting = (data & 12) >> 2;
+
+		switch(rot) {
+		case 0:
+			offsetZ = torchOffset[setting];
+			break;
+		case 1:
+			offsetX = -torchOffset[setting];
+			break;
+		case 2:
+			offsetZ = -torchOffset[setting];
+			break;
+		case 3:
+			offsetX = torchOffset[setting];
+		}
+
+		region->getLevel()->addParticle(ParticleType::RedDust, {posX + offsetX, posY, posZ + offsetZ}, {0.0F, 0.0F, 0.0F}, 1);
+	}
 }

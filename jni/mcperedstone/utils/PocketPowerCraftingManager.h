@@ -1,5 +1,5 @@
 #pragma once
-#include "mcpe/client/Recipes.h"
+#include "mcpe/world/item/crafting/Recipes.h"
 #include <string>
 #include <vector>
 

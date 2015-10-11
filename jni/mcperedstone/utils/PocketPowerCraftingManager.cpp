@@ -1,7 +1,6 @@
 #include "PocketPowerCraftingManager.h"
 #include "mcpe/world/item/ItemInstance.h"
 #include "mcpe/world/item/Item.h"
-#include "mcpe/client/Recipes.h"
 
 Recipes* PocketPowerCraftingManager::_Instance;
 std::vector<Recipes::Type> PocketPowerCraftingManager::_ingredients;

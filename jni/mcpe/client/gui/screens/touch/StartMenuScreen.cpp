@@ -1,6 +1,5 @@
 #include "StartMenuScreen.h"
 
-// I don't even know if static declarations work with non-primitive types :P
 std::vector<std::string> Touch::StartMenuScreen::pocketpowerSplashes = {
 	"Now with 120% more redstone!",
 	"Redstoney!",
@@ -8,5 +7,7 @@ std::vector<std::string> Touch::StartMenuScreen::pocketpowerSplashes = {
 	"many repeater so tnt",
 	"Contains Redstone!",
 	"by Byteandahalf!",
-	"Not to be mistaken with Bluestone!"
+	"Not to be mistaken with Bluestone!",
+	"Who wants to wait for 0.13.0?",
+	"Side effects include explosions!"
 };

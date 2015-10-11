@@ -10,7 +10,7 @@
 #include "mcpe/client/gui/screens/CreativeInventoryScreen.h"
 #include "mcpe/client/gui/screens/touch/StartMenuScreen.h"
 #include "mcpe/world/level/TilePos.h"
-#include "mcpe/client/Recipes.h"
+#include "mcpe/world/item/crafting/Recipes.h"
 #include "mcpe/world/level/TileSource.h"
 #include "mcpe/world/level/tile/TntTile.h"
 #include "mcpe/world/level/tile/EntityTile.h"
