@@ -8,7 +8,7 @@
 
 #include "mcpe/client/renderer/tile/TileTessellator.h"
 #include "mcpe/client/gui/screens/CreativeInventoryScreen.h"
-#include "mcpe/client/gui/screens/StartMenuScreen.h"
+#include "mcpe/client/gui/screens/touch/StartMenuScreen.h"
 #include "mcpe/world/level/TilePos.h"
 #include "mcpe/client/Recipes.h"
 #include "mcpe/world/level/TileSource.h"
@@ -162,19 +162,10 @@ ItemInstance CreativeInventoryScreen$getItemFromType(CreativeInventoryScreen* se
 }
 
 void (*_Touch$StartMenuScreen$chooseRandomSplash)(Touch::StartMenuScreen*);
-void Touch$StartMenuScreen$chooseRandomSplash(Touch::StartMenuScreen* screen) {
-	std::vector<std::string> newSplashes = {
-		"Now 120% more redstone!",
-		"Redstoney!",
-		"such redstone much wow",
-		"many repeater so tnt",
-		"Contains redstone!",
-		"Only contains 500% redstone!",
-		"Contains bluestone!"
-	};
-	Touch::StartMenuScreen::mSplashes = newSplashes;
+void Touch$StartMenuScreen$chooseRandomSplash(Touch::StartMenuScreen* self) {
+	self->mSplashes = self->pocketpowerSplashes;
 	
-	_Touch$StartMenuScreen$chooseRandomSplash(screen);
+	_Touch$StartMenuScreen$chooseRandomSplash(self);
 }
 
 bool (*_Item$useOn)(Item*, ItemInstance*, Player*, int, int, int, signed char, float, float, float);
