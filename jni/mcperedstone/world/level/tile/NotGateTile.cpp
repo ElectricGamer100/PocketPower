@@ -1,6 +1,7 @@
 #include "NotGateTile.h"
 
 #include "mcpe/world/level/TileSource.h"
+#include "mcpe/world/level/Level.h"
 #include "mcpe/world/entity/player/Player.h"
 
 NotGateTile::NotGateTile(int blockId, const std::string& texture) : TorchTile(blockId, texture) {
@@ -18,6 +19,32 @@ NotGateTile::NotGateTile(int blockId, const std::string& texture) : TorchTile(bl
 }
 
 void NotGateTile::animateTick(TileSource* region, int x, int y, int z, Random* random) {
+    if(!isActive())
+		return;
+    float posX = x + 0.5;
+    float posY = y + 0.7;
+    float posZ = z + 0.5;
+    float horizontalOffset = 0.27;
+    float verticalOffset = 0.22;
+	
+    switch(region->getData(posX, posY, posZ)) {
+    case 0:
+    case 5:
+        region->getLevel()->addParticle(ParticleType::RedDust, {posX, posY, posZ}, {1.0, 1.0, 1.0}, 1);
+        break;
+    case 1:
+        region->getLevel()->addParticle(ParticleType::RedDust, {posX - horizontalOffset, posY + verticalOffset, posZ}, {1.0, 1.0, 1.0}, 1);
+        break;
+    case 2:
+        region->getLevel()->addParticle(ParticleType::RedDust, {posX + horizontalOffset, posY + verticalOffset, posZ}, {1.0, 1.0, 1.0}, 1);
+        break;
+    case 3:
+        region->getLevel()->addParticle(ParticleType::RedDust, {posX, posY + verticalOffset, posZ - horizontalOffset}, {1.0, 1.0, 1.0}, 1);
+        break;
+    case 4:
+        region->getLevel()->addParticle(ParticleType::RedDust, {posX, posY + verticalOffset, posZ + horizontalOffset}, {1.0, 1.0, 1.0}, 1);
+        break;
+    }
 }
 
 bool NotGateTile::mayPlace(TileSource* region, int x, int y, int z, signed char side) {

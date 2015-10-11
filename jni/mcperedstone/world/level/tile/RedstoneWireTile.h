@@ -24,7 +24,6 @@ public:
 	virtual bool mayPlace(TileSource*, int, int, int);
 	virtual void neighborChanged(TileSource*, int, int, int, int, int, int);
 	virtual void animateTick(TileSource*, int, int, int, Random*);
-	virtual void tick(TileSource*, int, int, int, Random*);
 	virtual void playerDestroy(Player*, int, int, int, int);
 	virtual bool isSignalSource();
 	virtual int getSignal(TileSource*, int, int, int, int);

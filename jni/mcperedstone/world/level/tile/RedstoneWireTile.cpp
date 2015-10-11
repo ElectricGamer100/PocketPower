@@ -1,8 +1,10 @@
 #include "RedstoneWireTile.h"
 #include "mcpe/world/entity/player/Player.h"
 #include "mcpe/world/level/TileSource.h"
+#include "mcpe/world/level/Level.h"
 #include "mcpe/world/item/Item.h"
 #include "mcpe/world/Facing.h"
+#include "mcpe/util/Mth.h"
 
 
 std::array<unsigned int, 16> RedstoneWireTile::colors =
@@ -111,11 +113,24 @@ void RedstoneWireTile::neighborChanged(TileSource* region, int x, int y, int z, 
 }
 
 void RedstoneWireTile::animateTick(TileSource* region, int x, int y, int z, Random* random) {
-	if(region->getData(x, y, z) == 0)
+	int data = region->getData(x, y, z);
+	if(data == 0)
 		return;
-}
+	float xoff = x + 0.5F + (Mth::random() - 0.5F) * 0.2F;
+	float yoff = y + 0.0625F;
+	float zoff = z + 0.5F + (Mth::random() - 0.5F) * 0.2F;
+	
+	float velHelper = data / 15.0F;
+	float xVel = velHelper * 0.6F + 0.4F;
+	float yVel = velHelper * velHelper * 0.7F - 0.5F;
+	float zVel = velHelper * velHelper * 0.6F - 0.7F;
+	if(yVel < 0.0F)
+		yVel = 0.0F;
+	if(zVel < 0.0F)
+		zVel = 0.0F;
 
-void RedstoneWireTile::tick(TileSource* region, int x, int y, int z, Random* random) {}
+	region->getLevel()->addParticle(ParticleType::RedDust, {xoff, yoff, zoff}, {xVel, yVel, zVel}, 1);
+}
 
 bool RedstoneWireTile::isSignalSource() {
 	return wiresProvidePower;

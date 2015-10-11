@@ -26,6 +26,7 @@ public:
 	virtual bool mayPlace(TileSource*, int, int, int);
 	virtual bool use(Player*, int, int, int);
 	virtual int getResource(Random*, int, int);
+	virtual void animateTick(TileSource*, int, int, int, Random*);
 
 private:
 	bool isGettingPowered(TileSource*, int, int, int, int);

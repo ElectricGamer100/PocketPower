@@ -137,3 +137,7 @@ void RepeaterTile::onPlace(TileSource* region, int x, int y, int z) {
     region->updateNeighborsAt({x, y - 1, z}, id);
     region->updateNeighborsAt({x, y + 1, z}, id);
 }
+
+void RepeaterTile::animateTick(TileSource* region, int x, int y, int z, Random*) {
+	
+}
