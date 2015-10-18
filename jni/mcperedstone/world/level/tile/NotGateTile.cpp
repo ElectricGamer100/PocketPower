@@ -103,6 +103,7 @@ void NotGateTile::playerDestroy(Player* player, int x, int y, int z, int side) {
 	if(isActive()) {
 		player->region.scheduleBlockUpdate(x, y, z, id, 0);
 	}
+	Tile::playerDestroy(player, x, y, z, side);
 }
 
 bool NotGateTile::isSignalSource() {

@@ -54,7 +54,7 @@ void PressurePlateTile::playerDestroy(Player* player, int x, int y, int z, int s
 		player->region.updateNeighborsAt({x, y, z}, id);
 		player->region.updateNeighborsAt({x, y - 1, z}, id);
 	}
-	Tile::onRemove(&player->region, x, y, z);
+	Tile::playerDestroy(player, x, y, z, side);
 }
 
 void PressurePlateTile::setStateIfMobInteractsWithPlate(TileSource* region, int x, int y, int z, int power) {

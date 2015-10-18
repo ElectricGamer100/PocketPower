@@ -17,7 +17,7 @@ RedstoneWireTile::RedstoneWireTile(int blockId, const std::string& texture, cons
 	setVisualShape(0.0F, 0.0F, 0.0F, 1.0F, 0.0625F, 1.0F);
 	Tile::solid[blockId] = false;
 	Tile::lightBlock[blockId] = 0;
-	destroyTime = 0.0F;
+	setDestroyTime(0.0F);
 	setNameId("redstoneDust");
 }
 
@@ -61,7 +61,6 @@ void RedstoneWireTile::onPlace(TileSource* region, int x, int y, int z) {
 }
 
 void RedstoneWireTile::playerDestroy(Player* player, int x, int y, int z, int side) {
-	Tile::onRemove(&player->region, x, y, z);
 	player->region.updateNeighborsAt({x, y + 1, z}, id);
 	player->region.updateNeighborsAt({x, y - 1, z}, id);
 	player->region.updateNeighborsAt({x + 1, y, z}, id);
@@ -93,6 +92,8 @@ void RedstoneWireTile::playerDestroy(Player* player, int x, int y, int z, int si
 		updateWires(&player->region, x, y + 1, z + 1);
 	else
 		updateWires(&player->region, x, y - 1, z + 1);
+		
+	Tile::playerDestroy(player, x, y, z, side);
 }
 
 bool RedstoneWireTile::canSurvive(TileSource* region, int x, int y, int z) {
@@ -107,6 +108,7 @@ void RedstoneWireTile::neighborChanged(TileSource* region, int x, int y, int z, 
 	if(!canSurvive(region, x, y, z)) {
 		popResource(region, x, y, z, ItemInstance(Item::items[getResource(NULL, 0, 0)]));
 		region->removeTile(x, y, z);
+		return;
 	}
 	recalculate(region, x, y, z);
 	Tile::neighborChanged(region, x, y, z, newX, newY, newZ);

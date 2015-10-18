@@ -83,6 +83,7 @@ public:
 	static void initCreativeItems();
 	static void addCreativeItem(Tile*, short);
 	static void addCreativeItem(Item*, short);
+	static std::vector<ItemInstance> creativeList;
 
 	static Item* items[512];
 

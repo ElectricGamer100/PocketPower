@@ -113,8 +113,8 @@ void Tile$initTiles() {
 	Tile::pressurePlate_stone = new LightPressurePlateTile(70, "pressurePlateStone", "stone", &Material::stone, LightPressurePlateTile::SENSITIVITY::MOBS);
 	Tile::pressurePlate_wood = new LightPressurePlateTile(72, "pressurePlateWood", "planks", &Material::wood, LightPressurePlateTile::SENSITIVITY::EVERYTHING);
 	Tile::lever = new LeverTile(69, "lever", &Material::circuits);
-	Tile::offlamp = new LampTile(123, "redstone_lamp_off", &Material::stone);
-	Tile::onlamp = new LampTile(124, "redstone_lamp_on", &Material::stone);
+	Tile::offlamp = new LampTile(123, "redstone_lamp_off", &Material::dirt);
+	Tile::onlamp = new LampTile(124, "redstone_lamp_on", &Material::dirt);
 	Tile::button = new ButtonTile(77, "stone", &Material::circuits);
 	Tile::buttonWood = new ButtonTile(143, "planks", &Material::circuits);
 	Tile::pressurePlate_gold = new HeavyPressurePlateTile(147, "weightedPlate_light", "gold_block", &Material::metal, 15);
@@ -173,8 +173,8 @@ bool (*_Item$useOn)(Item*, ItemInstance*, Player*, int, int, int, signed char, f
 bool Item$useOn(Item* self, ItemInstance* item, Player* player, int x, int y, int z, signed char side, float xx, float yy, float zz) {
 	if(item->item == Item::redStone) {
 		if(Tile::redStoneDust->mayPlace(&player->region, x + Facing::STEP_X[side], y + Facing::STEP_Y[side], z + Facing::STEP_Z[side])) {
-			player->region.setTileAndData(x + Facing::STEP_X[side], y + Facing::STEP_Y[side], z + Facing::STEP_Z[side], {55, 0}, 3);
 			item->count--;
+			player->region.setTileAndData(x + Facing::STEP_X[side], y + Facing::STEP_Y[side], z + Facing::STEP_Z[side], {55, 0}, 3);
 			return true;
 		}
 	}

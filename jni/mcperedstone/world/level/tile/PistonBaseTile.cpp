@@ -10,7 +10,7 @@
 #include <algorithm>
 
 
-PistonBaseTile::PistonBaseTile(int blockId, bool sticky) : Tile(blockId, &Material::stone) {
+PistonBaseTile::PistonBaseTile(int blockId, bool sticky) : Tile(blockId, &Material::dirt) {
 	init();
 
 	if(!sticky) {
