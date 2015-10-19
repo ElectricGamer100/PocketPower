@@ -1,8 +1,10 @@
 #include "PistonBaseTile.h"
 #include "PistonMovingTile.h"
 #include "entity/PistonTileEntity.h"
+
 #include "mcpe/world/material/Material.h"
 #include "mcpe/world/level/TileSource.h"
+#include "mcpe/world/level/TilePos.h"
 #include "mcpe/world/Facing.h"
 #include "mcpe/world/item/Item.h"
 #include "mcpe/world/item/ItemInstance.h"
@@ -200,6 +202,10 @@ void PistonBaseTile::triggerEvent(TileSource* region, int x, int y, int z, int e
 		} else
 			region->setTileAndData(x, y, z, {id, rotation}, 3);
 	} else if(eventType == 1) {
+		PistonTileEntity* pistonEntity = (PistonTileEntity*) region->getTileEntity({x, y, z});
+		if(pistonEntity)
+			pistonEntity->placeTileAndFinish(region);
+			
 		PistonMovingTile::setTileEntityAttributes(this, rotation, rotation, false, true, {x, y, z});
 		region->setTileAndData(x, y, z, {36, rotation}, 3);
 		if(sticky) {
@@ -212,7 +218,8 @@ void PistonBaseTile::triggerEvent(TileSource* region, int x, int y, int z, int e
 
 			if(pullID == 36) {
 				PistonTileEntity* pistonEntity = (PistonTileEntity*) region->getTileEntity({pullX, pullY, pullZ});
-				pistonEntity->setTileAndFinish(region);
+				if(pistonEntity)	
+					pistonEntity->placeTileAndFinish(region);
 				pullID = pistonEntity->storedBlock->id;
 				pullData = pistonEntity->storedData;
 				var13 = true;
@@ -304,7 +311,7 @@ bool PistonBaseTile::actuallyPushRow(TileSource* region, int x, int y, int z, in
 			region->setTileAndData(xx + Facing::STEP_X[rotation], yy + Facing::STEP_Y[rotation], zz + Facing::STEP_Z[rotation], {36, rotation | (sticky? 8 : 0)}, 3);
 		} else {
 			PistonMovingTile::setTileEntityAttributes(Tile::tiles[pushID], pushData, rotation, true, false, {xx + Facing::STEP_X[rotation], yy + Facing::STEP_Y[rotation], zz + Facing::STEP_Z[rotation]});
-			region->setTileAndData(xx + Facing::STEP_X[rotation], yy + Facing::STEP_Y[rotation], zz + Facing::STEP_Z[rotation], {36, data}, 3);
+			region->setTileAndData(xx + Facing::STEP_X[rotation], yy + Facing::STEP_Y[rotation], zz + Facing::STEP_Z[rotation], {36, pushData}, 3);
 		}
 	}
 	return true;

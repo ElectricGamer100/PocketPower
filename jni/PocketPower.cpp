@@ -45,6 +45,9 @@
 extern void (*_TileEntity$initTileEntities)();
 void TileEntity$initTileEntities();
 
+extern std::unique_ptr<TileEntity> (*_EntityTile$newTileEntity)(EntityTile*, const TilePos&);
+std::unique_ptr<TileEntity> EntityTile$newTileEntity(EntityTile*, const TilePos&);
+
 extern std::unique_ptr<TileEntity> (*_TileEntityFactory$createTileEntity)(TileEntityType, const TilePos&);
 std::unique_ptr<TileEntity> TileEntityFactory$createTileEntity(TileEntityType, const TilePos&);
 
@@ -197,6 +200,7 @@ JNIEXPORT jint JNI_OnLoad(JavaVM* vm, void* reserved) {
 	MSHookFunction((void*) &Recipes::init, (void*) &Recipes$init, (void**) &_Recipes$init);
 	MSHookFunction((void*) &TileEntity::initTileEntities, (void*) &TileEntity$initTileEntities, (void**) &_TileEntity$initTileEntities);
 	MSHookFunction((void*) &TileEntityFactory::createTileEntity, (void*) &TileEntityFactory$createTileEntity, (void**) &_TileEntityFactory$createTileEntity);
+	MSHookFunction((void*) &EntityTile::newTileEntity, (void*) &EntityTile$newTileEntity, (void**) &_EntityTile$newTileEntity);
 	
 
 	DoorTile::_$neighborChanged = (void (*)(DoorTile*, TileSource*, int, int, int, int, int, int)) VirtualHook("_ZTV8DoorTile", "_ZN8DoorTile15neighborChangedEP10TileSourceiiiiii", (void*) &DoorTile::$neighborChanged);

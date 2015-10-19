@@ -14,7 +14,6 @@ public:
 	virtual void onRemoved();
 	virtual bool isFinished();
 
-private:
 	Tile* storedBlock;
 	int storedData;
 	int orientation;

@@ -1,19 +1,20 @@
 #pragma once
 #include "mcpe/world/level/tile/EntityTile.h"
+#include "mcpe/world/level/TilePos.h"
 
 class PistonMovingTile : public EntityTile {
 public:
 	PistonMovingTile(int);
 
-	virtual TileEntity* newTileEntity(const TilePos&);
+	virtual std::unique_ptr<TileEntity> newTileEntity(const TilePos&);
 
-	void setTileEntityAttributes(Tile*, int, int, bool, bool, TilePos&);
+	static void setTileEntityAttributes(Tile*, int, int, bool, bool, const TilePos&);
 
 private:
-	Tile* pushedTile;
-	int pushedData;
-	int rotation;
-	bool isExtending;
-	bool renderHead;
-	TilePos pos;
+	static Tile* pushedTile;
+	static int pushedData;
+	static int rotation;
+	static bool isExtending;
+	static bool renderHead;
+	static TilePos pos;
 };
