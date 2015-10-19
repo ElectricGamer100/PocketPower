@@ -209,6 +209,7 @@ public:
 	static Tile* pistonNormal; // 33
 	static Tile* pistonArm; // 34
 	static Tile* cloth; // 35
+	static Tile* pistonMoving; // 36
 	static Tile* yellowFlower; // 37
 	static Tile* redFlower; // 38
 	static Tile* brownMushroom; // 39

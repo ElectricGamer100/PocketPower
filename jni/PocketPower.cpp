@@ -33,6 +33,7 @@
 #include "mcperedstone/world/level/tile/ButtonTile.h"
 #include "mcperedstone/world/level/tile/PistonBaseTile.h"
 #include "mcperedstone/world/level/tile/PistonArmTile.h"
+#include "mcperedstone/world/level/tile/PistonMovingTile.h"
 #include "mcperedstone/world/level/tile/RedstoneBlockTile.h"
 #include "mcperedstone/world/level/tile/DoorTile.h"
 #include "mcperedstone/world/level/tile/TrapDoorTile.h"
@@ -87,6 +88,7 @@ void initTileItems() {
 	new TileItem(33 - 0x100);
 	new TileItem(29 - 0x100);
 	new TileItem(34 - 0x100);
+	new TileItem(36 - 0x100);
 }
 
 void initMaterials() {
@@ -124,6 +126,7 @@ void Tile$initTiles() {
 	Tile::pistonNormal = new PistonBaseTile(33, false);
 	Tile::pistonSticky = new PistonBaseTile(29, true);
 	Tile::pistonArm = new PistonArmTile(34);
+	Tile::pistonMoving = new PistonMovingTile(36);
 	Tile::redstoneBlock = new RedstoneBlockTile(152);
 
 	initTileItems();

@@ -1,5 +1,4 @@
 #pragma once
-
 #include "Tile.h"
 class TileEntity;
 class TilePos;

@@ -1,4 +1,6 @@
 #include "PistonBaseTile.h"
+#include "PistonMovingTile.h"
+#include "entity/PistonTileEntity.h"
 #include "mcpe/world/material/Material.h"
 #include "mcpe/world/level/TileSource.h"
 #include "mcpe/world/Facing.h"
@@ -131,10 +133,6 @@ void PistonBaseTile::updateState(TileSource* region, int x, int y, int z) {
 }
 
 bool PistonBaseTile::hasPower(TileSource* region, int x, int y, int z, int rotation) {
-	// This can only return true if it is not being powered at its face
-	// This is because back in Minecraft beta 1.7 (when pistons were first added), the
-	// game crashes when we powered a piston at its face, because it would become powered
-	// and unpowered in the same tick.
 	if(rotation != 0 && region->getIndirectPowerOutput(x, y - 1, z, 0))
 		return true;
 	if(rotation != 1 && region->getIndirectPowerOutput(x, y + 1, z, 1))
@@ -195,7 +193,6 @@ bool PistonBaseTile::canPushRow(TileSource* region, int x, int y, int z, int rot
 }
 
 void PistonBaseTile::triggerEvent(TileSource* region, int x, int y, int z, int eventType, int rotation) {
-	//this->ignoreUpdates = true;
 	if(eventType == 0) {
 		if(actuallyPushRow(region, x, y, z, rotation)) {
 			region->setTileAndData(x, y, z, {id, rotation | 8}, 3);
@@ -203,31 +200,42 @@ void PistonBaseTile::triggerEvent(TileSource* region, int x, int y, int z, int e
 		} else
 			region->setTileAndData(x, y, z, {id, rotation}, 3);
 	} else if(eventType == 1) {
+		PistonMovingTile::setTileEntityAttributes(this, rotation, rotation, false, true, {x, y, z});
+		region->setTileAndData(x, y, z, {36, rotation}, 3);
 		if(sticky) {
 			int pullX = x + Facing::STEP_X[rotation] * 2;
 			int pullY = y + Facing::STEP_Y[rotation] * 2;
 			int pullZ = z + Facing::STEP_Z[rotation] * 2;
 			int pullID = region->getTile(pullX, pullY, pullZ).id;
 			int pullData = region->getData(pullX, pullY, pullZ);
+			bool var13 = false;
 
-			if(Tile::tiles[pullID] != NULL) {
+			if(pullID == 36) {
+				PistonTileEntity* pistonEntity = (PistonTileEntity*) region->getTileEntity({pullX, pullY, pullZ});
+				pistonEntity->setTileAndFinish(region);
+				pullID = pistonEntity->storedBlock->id;
+				pullData = pistonEntity->storedData;
+				var13 = true;
+			}
+
+			if(!var13 && Tile::tiles[pullID] != NULL) {
+				x += Facing::STEP_X[rotation], y += Facing::STEP_Y[rotation], z += Facing::STEP_Z[rotation];
+
 				PistonPushInfo pushInfo = getPushInfoFor(region, pullX, pullY, pullZ);
 				if(pushInfo == PistonPushInfo::MAY_PUSH) {
-					region->setTileAndData(pullX - Facing::STEP_X[rotation], pullY - Facing::STEP_Y[rotation], pullZ - Facing::STEP_Z[rotation], {pullID, pullData}, 3);
+					PistonMovingTile::setTileEntityAttributes(Tile::tiles[pullID], pullData, rotation, false, false, {x, y, z});
+					region->setTileAndData(x, y, z, {36, pullData}, 3);
 					region->setTileAndData(pullX, pullY, pullZ, {0, 0}, 3);
 				}
 				else
 					region->setTileAndData(pullX - Facing::STEP_X[rotation], pullY - Facing::STEP_Y[rotation], pullZ - Facing::STEP_Z[rotation], {0, 0}, 3);
 			}
-			else
+			else if(!var13)
 				region->setTileAndData(pullX - Facing::STEP_X[rotation], pullY - Facing::STEP_Y[rotation], pullZ - Facing::STEP_Z[rotation], {0, 0}, 3);
 		} else {
-			//this->ignoreUpdates = false;
 			region->setTileAndData(x + Facing::STEP_X[rotation], y + Facing::STEP_Y[rotation], z + Facing::STEP_Z[rotation], {0, 0}, 3);
-			//this->ignoreUpdates = true;
 		}
 	}
-	//this->ignoreUpdates = false;
 }
 
 void PistonBaseTile::pushEntitiesInto(TileSource* region, int x, int y, int z, int xx, int yy, int zz) {
@@ -292,12 +300,13 @@ bool PistonBaseTile::actuallyPushRow(TileSource* region, int x, int y, int z, in
 		}
 		
 		if(pushID == id && i2 == x && k2 == y && l2 == z) {
-			region->setTileAndData(xx + Facing::STEP_X[rotation], yy + Facing::STEP_Y[rotation], zz + Facing::STEP_Z[rotation], {34, rotation | (sticky? 8 : 0)}, 3);
+			PistonMovingTile::setTileEntityAttributes(Tile::tiles[34], rotation | (sticky? 8 : 0), rotation, true, false, {xx + Facing::STEP_X[rotation], yy + Facing::STEP_Y[rotation], zz + Facing::STEP_Z[rotation]});
+			region->setTileAndData(xx + Facing::STEP_X[rotation], yy + Facing::STEP_Y[rotation], zz + Facing::STEP_Z[rotation], {36, rotation | (sticky? 8 : 0)}, 3);
 		} else {
-			region->setTileAndData(xx + Facing::STEP_X[rotation], yy + Facing::STEP_Y[rotation], zz + Facing::STEP_Z[rotation], {pushID, pushData}, 3);
+			PistonMovingTile::setTileEntityAttributes(Tile::tiles[pushID], pushData, rotation, true, false, {xx + Facing::STEP_X[rotation], yy + Facing::STEP_Y[rotation], zz + Facing::STEP_Z[rotation]});
+			region->setTileAndData(xx + Facing::STEP_X[rotation], yy + Facing::STEP_Y[rotation], zz + Facing::STEP_Z[rotation], {36, data}, 3);
 		}
 	}
-	//ts->setTileAndData(xx + Facing::xSide[rot], yy + Facing::ySide[rot], zz + Facing::zSide[rot], 34, rot, 0);
 	return true;
 }
 
@@ -319,9 +328,6 @@ PistonPushInfo PistonBaseTile::getPushInfoFor(TileSource* region, int x, int y, 
 		
 		switch(tile->renderType) {
 		case 1:
-			if(tile != Tile::web)
-				shouldDrop = true;
-			break;
 		case 2:
 		case 5:
 		case 7:
