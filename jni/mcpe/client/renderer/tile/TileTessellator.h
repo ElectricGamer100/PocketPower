@@ -50,7 +50,9 @@ public:
 	void tessellateAngledNotGate(Tile*, double, double, double, double, double);
 	bool tessellateLeverInWorld(LeverTile*, const TilePos&);
 	bool tessellateRepeaterInWorld(RepeaterTile*, const TilePos&);
+	//bool tessellatePistonBaseAllFaces(PistonBaseTile*, const TilePos&, bool);
 	bool tessellatePistonBaseInWorld(PistonBaseTile*, const TilePos&, bool);
+	//bool tessellatePistonArmAllFaces(PistonArmTile*, const TilePos&, bool);
 	bool tessellatePistonArmInWorld(PistonArmTile*, const TilePos&, bool);
 	void tessellatePistonRodUD(PistonArmTile*, float, float, float, float, float, float, float, float);
 	void tessellatePistonRodSN(PistonArmTile*, float, float, float, float, float, float, float, float);

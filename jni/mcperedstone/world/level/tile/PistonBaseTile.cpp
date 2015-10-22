@@ -202,12 +202,12 @@ void PistonBaseTile::triggerEvent(TileSource* region, int x, int y, int z, int e
 		} else
 			region->setTileAndData(x, y, z, {id, rotation}, 3);
 	} else if(eventType == 1) {
-		PistonTileEntity* pistonEntity = (PistonTileEntity*) region->getTileEntity({x, y, z});
+		PistonTileEntity* pistonEntity = (PistonTileEntity*) region->getTileEntity({x + Facing::STEP_X[rotation], y + Facing::STEP_Y[rotation], z + Facing::STEP_Z[rotation]});
 		if(pistonEntity)
 			pistonEntity->placeTileAndFinish(region);
 			
-		PistonMovingTile::setTileEntityAttributes(this, rotation, rotation, false, true, {x, y, z});
-		region->setTileAndData(x, y, z, {36, rotation}, 3);
+		//PistonMovingTile::setTileEntityAttributes(this, rotation, rotation, false, true, {x, y, z});
+		//region->setTileAndData(x, y, z, {36, rotation}, 3);
 		if(sticky) {
 			int pullX = x + Facing::STEP_X[rotation] * 2;
 			int pullY = y + Facing::STEP_Y[rotation] * 2;
@@ -218,15 +218,20 @@ void PistonBaseTile::triggerEvent(TileSource* region, int x, int y, int z, int e
 
 			if(pullID == 36) {
 				PistonTileEntity* pistonEntity = (PistonTileEntity*) region->getTileEntity({pullX, pullY, pullZ});
-				if(pistonEntity)	
-					pistonEntity->placeTileAndFinish(region);
-				pullID = pistonEntity->storedBlock->id;
-				pullData = pistonEntity->storedData;
-				var13 = true;
+				if(pistonEntity) {
+					if(pistonEntity->orientation == rotation && pistonEntity->extending) {
+						pistonEntity->placeTileAndFinish(region);
+						pullID = pistonEntity->storedBlock->id;
+						pullData = pistonEntity->storedData;
+						var13 = true;
+					}
+				}
 			}
 
 			if(!var13 && Tile::tiles[pullID] != NULL) {
-				x += Facing::STEP_X[rotation], y += Facing::STEP_Y[rotation], z += Facing::STEP_Z[rotation];
+				x += Facing::STEP_X[rotation];
+				y += Facing::STEP_Y[rotation];
+				z += Facing::STEP_Z[rotation];
 
 				PistonPushInfo pushInfo = getPushInfoFor(region, pullX, pullY, pullZ);
 				if(pushInfo == PistonPushInfo::MAY_PUSH) {

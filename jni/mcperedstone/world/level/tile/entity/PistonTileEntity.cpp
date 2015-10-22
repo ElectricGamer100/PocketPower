@@ -6,7 +6,8 @@
 
 PistonTileEntity::PistonTileEntity(Tile* storedBlock, int storedData, int orientation, bool extending, bool renderHead, const TilePos& position) :
 	TileEntity(TileEntityType::Piston, position, "Piston") {
-
+	
+	rendererId = 100;
 	this->storedBlock = storedBlock;
 	this->storedData = storedData;
 	this->orientation = orientation;
@@ -45,6 +46,8 @@ void PistonTileEntity::pushEntitiesInside(float _progress, float diff) {
 }
 
 void PistonTileEntity::placeTileAndFinish(TileSource* region) {
+	if(isFinished())
+		return;
 	if(oldProgress < 1.0F) {
 		oldProgress = progress = 1.0F;
 		finish();
@@ -61,17 +64,18 @@ void PistonTileEntity::onRemoved() {
 }
 
 void PistonTileEntity::tick(TileSource* region) {
-	TileEntity::tick(region);
+	//TileEntity::tick(region);
+	//region->removeTile(pos.x, pos.y, pos.z/*, {storedBlock->id, storedData}, 3*/);
 	oldProgress = progress;
-	
+		
 	if(oldProgress >= 1.0F) {
 		pushEntitiesInside(1.0F, 0.25F);
 		
 		if(region->getTile(pos.x, pos.y, pos.z).id == 36) {
 			if(storedBlock == NULL)
-				region->setTileAndData(pos.x, pos.y, pos.z, {0, 0}, 3);
+				region->removeTile(pos.x, pos.y, pos.z);
 			else
-				region->setTileAndData(pos.x, pos.y, pos.z, {storedBlock->id, storedData}, 3);
+				//region->setTileAndData(pos.x, pos.y, pos.z, {storedBlock->id, storedData}, 3);
 			
 			region->updateNeighborsAt(pos, storedBlock->id);
 		}

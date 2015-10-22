@@ -133,3 +133,6 @@ bool PistonArmTile::addCollisionShapes(TileSource& region, int x, int y, int z, 
 	return true;
 }
 
+void PistonArmTile::setOverrideTexture(TextureUVCoordinateSet texture) {
+	overrideTexture = texture;
+}

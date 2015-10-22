@@ -6,7 +6,9 @@
 
 #include "virtualhook.h"
 
+#include "mcpe/client/renderer/tileentity/TileEntityRenderDispatcher.h"
 #include "mcpe/client/renderer/tile/TileTessellator.h"
+#include "mcpe/client/game/MinecraftClient.h"
 #include "mcpe/client/gui/screens/CreativeInventoryScreen.h"
 #include "mcpe/client/gui/screens/touch/StartMenuScreen.h"
 #include "mcpe/world/level/TilePos.h"
@@ -22,6 +24,7 @@
 #include "mcpe/world/entity/player/Player.h"
 #include "mcpe/world/Facing.h"
 
+#include "mcperedstone/client/renderer/tileentity/PistonRenderer.h"
 #include "mcperedstone/world/item/RepeaterItem.h"
 #include "mcperedstone/world/level/tile/RedstoneWireTile.h"
 #include "mcperedstone/world/level/tile/NotGateTile.h"
@@ -187,6 +190,21 @@ bool Item$useOn(Item* self, ItemInstance* item, Player* player, int x, int y, in
 	return _Item$useOn(self, item, player, x, y, z, side, xx, yy, zz);
 }
 
+void* (*_TileEntityRenderDispatcher$C)(TileEntityRenderDispatcher*);
+void* TileEntityRenderDispatcher$C(TileEntityRenderDispatcher* self) {
+	self->pistonRenderer = new PistonRenderer(self);
+	
+	return _TileEntityRenderDispatcher$C(self);
+}
+
+TileEntityRenderer* (*_TileEntityRenderDispatcher$getRenderer)(TileEntityRenderDispatcher*, TileEntity&, const Vec3&, float, const mce::MaterialPtr&, const std::string&, int);
+TileEntityRenderer* TileEntityRenderDispatcher$getRenderer(TileEntityRenderDispatcher* self, TileEntity& tileEntity, const Vec3& pos, float partialTicks, const mce::MaterialPtr& material, const std::string& str, int i) {
+	if(tileEntity.rendererId == 100)
+		self->pistonRenderer->render(self->minecraft.getLocalPlayer()->region, tileEntity, pos, partialTicks, material, str, i);
+		
+	return _TileEntityRenderDispatcher$getRenderer(self, tileEntity, pos, partialTicks, material, str, i);
+}
+
 
 JNIEXPORT jint JNI_OnLoad(JavaVM* vm, void* reserved) {
 	
@@ -201,7 +219,11 @@ JNIEXPORT jint JNI_OnLoad(JavaVM* vm, void* reserved) {
 	MSHookFunction((void*) &TileEntity::initTileEntities, (void*) &TileEntity$initTileEntities, (void**) &_TileEntity$initTileEntities);
 	MSHookFunction((void*) &TileEntityFactory::createTileEntity, (void*) &TileEntityFactory$createTileEntity, (void**) &_TileEntityFactory$createTileEntity);
 	MSHookFunction((void*) &EntityTile::newTileEntity, (void*) &EntityTile$newTileEntity, (void**) &_EntityTile$newTileEntity);
-	
+
+	void* TileEntityRenderDispatcher$$getRenderer = (void*) dlsym(RTLD_DEFAULT, "_ZN26TileEntityRenderDispatcher6renderER10TileEntityRK4Vec3fRKN3mce11MaterialPtrERKSsi");
+	MSHookFunction(TileEntityRenderDispatcher$$getRenderer, (void*) &TileEntityRenderDispatcher$getRenderer, (void**) &_TileEntityRenderDispatcher$getRenderer);
+	void* TileEntityRenderDispatcher$$C = (void*) dlsym(RTLD_DEFAULT, "_ZN26TileEntityRenderDispatcherC2Ev");
+	MSHookFunction(TileEntityRenderDispatcher$$C, (void*) &TileEntityRenderDispatcher$C, (void**) &_TileEntityRenderDispatcher$C);
 
 	DoorTile::_$neighborChanged = (void (*)(DoorTile*, TileSource*, int, int, int, int, int, int)) VirtualHook("_ZTV8DoorTile", "_ZN8DoorTile15neighborChangedEP10TileSourceiiiiii", (void*) &DoorTile::$neighborChanged);
 	TrapDoorTile::_$neighborChanged = (void (*)(TrapDoorTile*, TileSource*, int, int, int, int, int, int)) VirtualHook("_ZTV12TrapDoorTile", "_ZN12TrapDoorTile15neighborChangedEP10TileSourceiiiiii", (void*) &TrapDoorTile::$neighborChanged);

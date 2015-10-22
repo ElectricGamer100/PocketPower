@@ -16,6 +16,10 @@ public:
 	static int getRotation(int);
 	static bool isSticky(int);
 	
+	void setOverrideTexture(TextureUVCoordinateSet);
+	
 	TextureUVCoordinateSet texture_sticky;
 	TextureUVCoordinateSet texture_side;
+	
+	TextureUVCoordinateSet overrideTexture;
 };
